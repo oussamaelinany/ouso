@@ -1,0 +1,240 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Ouso — Powerful Free Tools. All in One Place.</title>
+  <meta name="description" content="Ouso is a free platform of online tools for images, videos, AI content, PDFs and more.">
+  <link rel="icon" type="image/svg+xml" href="assets/icons/favicon.svg">
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,500;9..144,600&family=Manrope:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+
+  <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+
+  <a class="skip-link" href="#main">Skip to content</a>
+
+  <!-- ============ HEADER ============ -->
+  <header class="site-header">
+    <div class="wrap header-inner">
+      <a href="#home" class="brand" aria-label="Ouso home">
+        <img src="assets/icons/logo.svg" alt="" class="brand-mark" width="32" height="32">
+        <span class="brand-name">Ouso</span>
+      </a>
+
+      <nav class="main-nav" id="main-nav" aria-label="Primary">
+        <a href="#home" data-nav-link>Home</a>
+        <a href="#images" data-nav-link data-category="images">Images</a>
+        <a href="#videos" data-nav-link data-category="videos">Videos</a>
+        <a href="#ai-content" data-nav-link data-category="ai-content">AI Content</a>
+        <a href="#pdf" data-nav-link data-category="pdf">PDF</a>
+        <a href="#tools" data-nav-link data-category="tools">Tools</a>
+      </nav>
+
+      <button class="nav-toggle" id="nav-toggle" aria-expanded="false" aria-controls="main-nav" aria-label="Open menu">
+        <svg width="24" height="24"><use href="assets/icons/icons.svg#icon-menu"></use></svg>
+      </button>
+    </div>
+  </header>
+
+  <main id="main">
+
+    <!-- ============ HERO ============ -->
+    <section class="hero" id="home">
+      <div class="wrap hero-inner">
+        <div class="hero-copy">
+          <h1>Powerful Free Tools.<br>All in One Place.</h1>
+          <p class="hero-lead">
+            Ouso brings together useful, free online tools for images, videos,
+            AI-generated content, PDFs and everyday tasks — no downloads,
+            no accounts, no cost.
+          </p>
+          <a href="#categories" class="btn btn-primary">
+            Explore Tools
+            <svg width="18" height="18"><use href="assets/icons/icons.svg#icon-arrow"></use></svg>
+          </a>
+        </div>
+
+        <div class="hero-stat" aria-live="off">
+          <span class="hero-stat-label">Global Tool Activity</span>
+          <span class="hero-stat-number" id="activity-counter">0</span>
+          <span class="hero-stat-note">Tools processed across Ouso worldwide</span>
+        </div>
+      </div>
+    </section>
+
+    <div class="ad-slot wrap" data-ad-slot="hero-bottom">
+      <span class="ad-slot-label">Advertisement</span>
+    </div>
+
+    <!-- ============ CATEGORIES ============ -->
+    <section class="categories" id="categories">
+      <div class="wrap">
+        <h2 class="section-title">Browse by category</h2>
+        <div class="category-grid" id="category-grid"><!-- rendered by app.js --></div>
+      </div>
+    </section>
+
+    <!-- ============ TOOLS PANEL (shown when a category is opened) ============ -->
+    <section class="tools-panel" id="tools-panel" hidden aria-live="polite">
+      <div class="wrap">
+        <button class="back-link" id="back-to-categories" type="button">
+          <svg width="18" height="18"><use href="assets/icons/icons.svg#icon-chevron"></use></svg>
+          All categories
+        </button>
+
+        <div class="tools-panel-head">
+          <span class="tools-panel-icon" id="tools-panel-icon"></span>
+          <div>
+            <h2 id="tools-panel-title">Category</h2>
+            <p id="tools-panel-desc">Description</p>
+          </div>
+        </div>
+
+        <div class="tool-grid" id="tool-grid"><!-- rendered by app.js --></div>
+      </div>
+    </section>
+
+    <div class="ad-slot wrap" data-ad-slot="mid-page">
+      <span class="ad-slot-label">Advertisement</span>
+    </div>
+
+    <!-- ============ TESTIMONIALS ============ -->
+    <section class="testimonials" id="testimonials">
+      <div class="wrap">
+        <h2 class="section-title">What people are saying</h2>
+        <p class="section-subtitle">Example testimonials — shown for design purposes until real reviews go live.</p>
+
+        <div class="testimonial-grid">
+          <article class="testimonial-card">
+            <div class="stars" aria-hidden="true">
+              <svg width="16" height="16"><use href="assets/icons/icons.svg#icon-star"></use></svg>
+              <svg width="16" height="16"><use href="assets/icons/icons.svg#icon-star"></use></svg>
+              <svg width="16" height="16"><use href="assets/icons/icons.svg#icon-star"></use></svg>
+              <svg width="16" height="16"><use href="assets/icons/icons.svg#icon-star"></use></svg>
+              <svg width="16" height="16"><use href="assets/icons/icons.svg#icon-star"></use></svg>
+            </div>
+            <p>"A clean, fast set of tools that just gets out of the way. Exactly what I need for quick edits."</p>
+            <span class="testimonial-name">— Example testimonial</span>
+          </article>
+
+          <article class="testimonial-card">
+            <div class="stars" aria-hidden="true">
+              <svg width="16" height="16"><use href="assets/icons/icons.svg#icon-star"></use></svg>
+              <svg width="16" height="16"><use href="assets/icons/icons.svg#icon-star"></use></svg>
+              <svg width="16" height="16"><use href="assets/icons/icons.svg#icon-star"></use></svg>
+              <svg width="16" height="16"><use href="assets/icons/icons.svg#icon-star"></use></svg>
+              <svg width="16" height="16"><use href="assets/icons/icons.svg#icon-star"></use></svg>
+            </div>
+            <p>"Simple, elegant, and everything is in one place. Looking forward to the new tools."</p>
+            <span class="testimonial-name">— Example testimonial</span>
+          </article>
+
+          <article class="testimonial-card">
+            <div class="stars" aria-hidden="true">
+              <svg width="16" height="16"><use href="assets/icons/icons.svg#icon-star"></use></svg>
+              <svg width="16" height="16"><use href="assets/icons/icons.svg#icon-star"></use></svg>
+              <svg width="16" height="16"><use href="assets/icons/icons.svg#icon-star"></use></svg>
+              <svg width="16" height="16"><use href="assets/icons/icons.svg#icon-star"></use></svg>
+              <svg width="16" height="16"><use href="assets/icons/icons.svg#icon-star"></use></svg>
+            </div>
+            <p>"Feels premium, not cluttered with ads or pop-ups. A great idea done well."</p>
+            <span class="testimonial-name">— Example testimonial</span>
+          </article>
+        </div>
+
+        <form class="review-form" id="review-form">
+          <h3>Leave a review</h3>
+          <p class="review-note">Reviews will appear publicly once our review system goes live.</p>
+
+          <div class="field-row">
+            <label for="review-name">Name</label>
+            <input type="text" id="review-name" name="name" required maxlength="60">
+          </div>
+
+          <div class="field-row">
+            <label for="review-rating">Rating</label>
+            <select id="review-rating" name="rating" required>
+              <option value="5">5 — Excellent</option>
+              <option value="4">4 — Good</option>
+              <option value="3">3 — Average</option>
+              <option value="2">2 — Poor</option>
+              <option value="1">1 — Very poor</option>
+            </select>
+          </div>
+
+          <div class="field-row">
+            <label for="review-comment">Comment</label>
+            <textarea id="review-comment" name="comment" rows="3" required maxlength="400"></textarea>
+          </div>
+
+          <button type="submit" class="btn btn-primary">Submit review</button>
+          <p class="review-confirm" id="review-confirm" hidden>Thanks for your feedback! Reviews will go live once our verification system is ready.</p>
+        </form>
+      </div>
+    </section>
+
+    <div class="ad-slot wrap" data-ad-slot="footer-top">
+      <span class="ad-slot-label">Advertisement</span>
+    </div>
+
+  </main>
+
+  <!-- ============ FOOTER ============ -->
+  <footer class="site-footer">
+    <div class="wrap footer-inner">
+      <div class="footer-brand">
+        <a href="#home" class="brand" aria-label="Ouso home">
+          <img src="assets/icons/logo.svg" alt="" class="brand-mark" width="26" height="26">
+          <span class="brand-name">Ouso</span>
+        </a>
+        <p>Free online tools for a global audience.</p>
+      </div>
+
+      <div class="footer-col">
+        <h4>Categories</h4>
+        <a href="#images" data-category="images">Images</a>
+        <a href="#videos" data-category="videos">Videos</a>
+        <a href="#ai-content" data-category="ai-content">AI Content</a>
+        <a href="#pdf" data-category="pdf">PDF</a>
+        <a href="#tools" data-category="tools">Tools</a>
+      </div>
+
+      <div class="footer-col">
+        <h4>Company</h4>
+        <a href="#" data-footer-modal>About</a>
+        <a href="#" data-footer-modal>Contact</a>
+      </div>
+
+      <div class="footer-col">
+        <h4>Legal</h4>
+        <a href="#" data-footer-modal>Privacy Policy</a>
+        <a href="#" data-footer-modal>Terms of Service</a>
+        <a href="#" data-footer-modal>DMCA</a>
+      </div>
+    </div>
+
+    <div class="wrap">
+      <p class="footer-copy">&copy; <span id="footer-year"></span> Ouso. All rights reserved.</p>
+    </div>
+  </footer>
+
+  <!-- ============ MODAL (used for "coming soon" and locked tools) ============ -->
+  <div class="modal-backdrop" id="modal-backdrop" hidden>
+    <div class="modal" role="dialog" aria-modal="true" aria-labelledby="modal-title">
+      <button class="modal-close" id="modal-close" aria-label="Close">
+        <svg width="20" height="20"><use href="assets/icons/icons.svg#icon-close"></use></svg>
+      </button>
+      <span class="modal-icon"><svg width="28" height="28"><use href="assets/icons/icons.svg#icon-lock"></use></svg></span>
+      <h3 id="modal-title">Coming soon</h3>
+      <p id="modal-message">This service is under maintenance. It will be available soon.</p>
+    </div>
+  </div>
+
+  <script src="js/tools.js"></script>
+  <script src="js/app.js"></script>
+</body>
+</html>
