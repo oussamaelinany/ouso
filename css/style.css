@@ -450,3 +450,73 @@ ul { margin: 0; padding: 0; list-style: none; }
   html { scroll-behavior: auto; }
   * { transition: none !important; }
 }
+/* =========================================================
+   EXTRA TOOL-UI ELEMENTS (resizer, converter, rotator, cropper,
+   pdf tools, calculator, color tools, qr, password, base64…)
+   ========================================================= */
+.tool-ui { max-width: 480px; margin: 0 auto; display: flex; flex-direction: column; gap: 14px; }
+
+.btn-secondary {
+  background: var(--c-ivory);
+  color: var(--c-black);
+  border: 1px solid var(--c-line-soft);
+}
+.btn-secondary:hover { border-color: var(--c-gold); }
+.btn-row { display: flex; flex-wrap: wrap; gap: 10px; }
+
+.dim-row { display: flex; gap: 10px; }
+.dim-row label { flex: 1; font-size: 0.85rem; font-weight: 600; display: flex; flex-direction: column; gap: 4px; }
+.dim-row input, .tool-input {
+  padding: 10px 12px; border-radius: var(--radius-s);
+  border: 1px solid var(--c-line-soft); font-size: 0.95rem;
+}
+.checkbox-row { display: flex; align-items: center; gap: 8px; font-size: 0.9rem; }
+
+.file-list { margin: 0; padding-left: 20px; font-size: 0.88rem; color: rgba(11,11,12,0.7); }
+
+/* rotator */
+.rotate-canvas { max-width: 100%; border-radius: var(--radius-m); border: 1px solid var(--c-line-soft); }
+
+/* cropper */
+.crop-stage { position: relative; display: inline-block; max-width: 100%; touch-action: none; }
+.crop-stage img { max-width: 100%; border-radius: var(--radius-m); display: block; }
+.crop-box { position: absolute; border: 2px solid var(--c-gold); background: rgba(198,161,91,0.15); }
+
+/* calculator */
+.calc-display {
+  background: var(--c-black); color: var(--c-white);
+  font-family: var(--f-display); font-size: 1.8rem;
+  padding: 18px; border-radius: var(--radius-m); text-align: right;
+  overflow-x: auto; white-space: nowrap;
+}
+.calc-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 8px; }
+.calc-key {
+  padding: 16px 0; border-radius: var(--radius-s);
+  border: 1px solid var(--c-line-soft); background: var(--c-white);
+  font-size: 1.1rem; font-weight: 600;
+}
+.calc-key-op { background: var(--c-gold); color: var(--c-black); border-color: var(--c-gold); }
+.calc-key-clear { grid-column: span 4; background: var(--c-black); color: var(--c-white); }
+
+/* color tools */
+.color-picker { width: 100%; height: 60px; border: 1px solid var(--c-line-soft); border-radius: var(--radius-s); }
+.field-row-light { display: flex; align-items: center; gap: 10px; }
+.field-row-light label { width: 60px; font-size: 0.85rem; font-weight: 600; }
+.field-row-light input { flex: 1; padding: 9px 12px; border-radius: var(--radius-s); border: 1px solid var(--c-line-soft); }
+
+/* qr generator */
+.qr-output { display: flex; justify-content: center; padding: 10px 0; }
+
+/* password generator */
+.tool-result-box {
+  background: var(--c-black); color: var(--c-gold-bright);
+  font-family: monospace; font-size: 1.05rem;
+  padding: 16px; border-radius: var(--radius-m); word-break: break-all; text-align: center;
+}
+
+/* text tools / base64 */
+.tool-textarea {
+  width: 100%; padding: 12px 14px; border-radius: var(--radius-m);
+  border: 1px solid var(--c-line-soft); font-family: inherit; font-size: 0.95rem; resize: vertical;
+}
+.tool-divider { border: none; border-top: 1px solid var(--c-line-soft); margin: 6px 0; }
