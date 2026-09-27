@@ -54,10 +54,11 @@ const OUSO_CATEGORIES = [
 const OUSO_TOOLS = [
   // ---------------- IMAGES ----------------
   { id: "bg-remover", category: "images", name: "Background Remover", description: "Remove any image background in seconds.", icon: "icon-scissors", status: "maintenance" },
-  { id: "img-compressor", category: "images", name: "Image Compressor", description: "Shrink file size without losing quality.", icon: "icon-compress", status: "maintenance" },
-  { id: "img-resizer", category: "images", name: "Image Resizer", description: "Resize images to any dimension.", icon: "icon-resize", status: "maintenance" },
-  { id: "img-cropper", category: "images", name: "Image Cropper", description: "Crop images to the perfect frame.", icon: "icon-crop", status: "maintenance" },
-  { id: "img-converter", category: "images", name: "Image Converter", description: "Convert between JPG, PNG and WebP.", icon: "icon-convert", status: "maintenance" },
+  { id: "img-compressor", category: "images", name: "Image Compressor", description: "Shrink file size without losing quality.", icon: "icon-compress", status: "working" },
+  { id: "img-resizer", category: "images", name: "Image Resizer", description: "Resize images to any dimension.", icon: "icon-resize", status: "working" },
+  { id: "img-cropper", category: "images", name: "Image Cropper", description: "Crop images to the perfect frame.", icon: "icon-crop", status: "working" },
+  { id: "img-converter", category: "images", name: "Image Converter", description: "Convert between JPG, PNG and WebP.", icon: "icon-convert", status: "working" },
+  { id: "img-rotator", category: "images", name: "Image Rotator", description: "Rotate or flip an image instantly.", icon: "icon-rotate", status: "working" },
   { id: "img-upscaler", category: "images", name: "Image Upscaler", description: "Increase resolution without losing detail.", icon: "icon-upscale", status: "maintenance" },
 
   // ---------------- VIDEOS ----------------
@@ -74,17 +75,25 @@ const OUSO_TOOLS = [
   { id: "blog-outline-generator", category: "ai-content", name: "Blog Outline Generator", description: "Turn any topic into a structured outline.", icon: "icon-outline", status: "maintenance" },
 
   // ---------------- PDF ----------------
-  { id: "merge-pdf", category: "pdf", name: "Merge PDF", description: "Combine multiple PDFs into one file.", icon: "icon-merge", status: "maintenance" },
-  { id: "split-pdf", category: "pdf", name: "Split PDF", description: "Split one PDF into separate files.", icon: "icon-split", status: "maintenance" },
-  { id: "image-to-pdf", category: "pdf", name: "Image to PDF", description: "Turn JPG or PNG files into a PDF.", icon: "icon-image", status: "maintenance" },
-  { id: "pdf-to-image", category: "pdf", name: "PDF to Image", description: "Export PDF pages as image files.", icon: "icon-image", status: "maintenance" },
+  { id: "merge-pdf", category: "pdf", name: "Merge PDF", description: "Combine multiple PDFs into one file.", icon: "icon-merge", status: "working" },
+  { id: "split-pdf", category: "pdf", name: "Split PDF", description: "Split one PDF into separate files.", icon: "icon-split", status: "working" },
+  { id: "image-to-pdf", category: "pdf", name: "Image to PDF", description: "Turn JPG or PNG files into a PDF.", icon: "icon-image", status: "working" },
+  { id: "pdf-to-image", category: "pdf", name: "PDF to Image", description: "Export PDF pages as image files.", icon: "icon-image", status: "working" },
   { id: "compress-pdf", category: "pdf", name: "Compress PDF", description: "Reduce PDF file size for sharing.", icon: "icon-compress", status: "maintenance" },
   { id: "pdf-to-word", category: "pdf", name: "PDF to Word", description: "Convert a PDF into an editable document.", icon: "icon-word", status: "maintenance" },
 
   // ---------------- TOOLS ----------------
-  { id: "qr-generator", category: "tools", name: "QR Code Generator", description: "Create a QR code from any link or text.", icon: "icon-qr", status: "maintenance" },
-  { id: "text-tools", category: "tools", name: "Text Tools", description: "Count, clean and reformat text instantly.", icon: "icon-text", status: "maintenance" },
-  { id: "calculator", category: "tools", name: "Calculator", description: "A simple, fast everyday calculator.", icon: "icon-calculator", status: "maintenance" },
-  { id: "unit-converter", category: "tools", name: "Unit Converter", description: "Convert length, weight, and more.", icon: "icon-ruler", status: "maintenance" },
-  { id: "color-tools", category: "tools", name: "Color Tools", description: "Pick, convert and explore color palettes.", icon: "icon-palette", status: "maintenance" }
+  { id: "qr-generator", category: "tools", name: "QR Code Generator", description: "Create a QR code from any link or text.", icon: "icon-qr", status: "working" },
+  { id: "text-tools", category: "tools", name: "Text Tools", description: "Count, clean and reformat text instantly.", icon: "icon-text", status: "working" },
+  { id: "calculator", category: "tools", name: "Calculator", description: "A simple, fast everyday calculator.", icon: "icon-calculator", status: "working" },
+  { id: "unit-converter", category: "tools", name: "Unit Converter", description: "Convert length, weight, and more.", icon: "icon-ruler", status: "working" },
+  { id: "color-tools", category: "tools", name: "Color Tools", description: "Convert HEX, RGB and HSL colors.", icon: "icon-palette", status: "working" },
+  { id: "password-generator", category: "tools", name: "Password Generator", description: "Create strong, random passwords.", icon: "icon-key", status: "working" },
+  { id: "base64-tool", category: "tools", name: "Base64 Encoder/Decoder", description: "Encode or decode Base64 text instantly.", icon: "icon-code", status: "working" },
+  { id: "timestamp-converter", category: "tools", name: "Timestamp Converter", description: "Convert between Unix time and dates.", icon: "icon-clock", status: "working" }
 ];
+
+/* Shared registry that every tool-interface file (image-tools.js,
+   pdf-tools.js, misc-tools.js...) adds its render functions to.
+   Declared once here so those files never redeclare it. */
+const TOOL_RENDERERS = {};
