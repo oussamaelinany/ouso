@@ -25,7 +25,9 @@
     }
     box.textContent += msg + '\n';
   }
-  window.addEventListener('error', e => ousoDebug('ERROR: ' + e.message + ' @ ' + e.filename + ':' + e.lineno));
+  window.addEventListener('error', function(e) {
+    ousoDebug('ERROR: ' + (e.message || 'resource failed to load: ' + (e.target && e.target.src)));
+  }, true);
 </script>
   <a class="skip-link" href="#main">Skip to content</a>
 
