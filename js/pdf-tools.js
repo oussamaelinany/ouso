@@ -51,8 +51,10 @@ function loadPdfJs() {
 function buildFileZone(id, label, accept, multiple) {
   return `
     <div class="upload-zone" id="${id}-zone" tabindex="0" role="button" aria-label="${label}">
-      <svg width="34" height="34"><use href="assets/icons/icons.svg#icon-pdf"></use></svg>
-      <p>${label}</p>
+      <span class="upload-zone-icon">
+        <svg width="26" height="26"><use href="assets/icons/icons.svg#icon-pdf"></use></svg>
+      </span>
+      <p>${label}<span>Tap to browse your files</span></p>
       <input type="file" id="${id}-input" accept="${accept}" ${multiple ? "multiple" : ""} hidden>
     </div>
   `;
