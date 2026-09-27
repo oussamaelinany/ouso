@@ -6,10 +6,7 @@
   - draws the tool cards inside the tools panel
   - handles the mobile menu
   - runs the "Global Tool Activity" counter
-  - opens the maintenance modal when a locked tool is clicked
-
-  You should not need to edit this file when adding a new tool —
-  edit js/tools.js instead.
+  - opens a real tool's interface, or the maintenance modal
 */
 
 document.addEventListener("DOMContentLoaded", () => {
@@ -83,19 +80,19 @@ function openCategory(categoryId) {
 function toolBadge(status) {
   if (status === "working") return "";
   const icon = status === "api-ready" ? "icon-sparkle" : "icon-lock";
-  const label = status === "api-ready" ? "Coming soon" : "Coming soon";
+  const label = "Coming soon";
   return `<span class="tool-badge"><svg><use href="assets/icons/icons.svg#${icon}"></use></svg>${label}</span>`;
 }
 
 /* This is the single place that decides what happens when any
-   tool is clicked. Right now every tool is "maintenance", so
-   they all open the modal. When a tool becomes "working", add
-   a case here that runs its real feature instead. */
+   tool is clicked. A "working" tool with a matching entry in
+   TOOL_RENDERERS opens its real interface. Everything else
+   opens the maintenance modal. */
 function handleToolClick(tool) {
   if (!tool) return;
 
-  if (tool.status === "working") {
-    // Future: call the tool's real function here.
+  if (tool.status === "working" && typeof TOOL_RENDERERS !== "undefined" && TOOL_RENDERERS[tool.id]) {
+    openToolWorkspace(tool);
     return;
   }
 
@@ -105,9 +102,32 @@ function handleToolClick(tool) {
   );
 }
 
+/* Opens the dedicated workspace for a real, working tool. */
+function openToolWorkspace(tool) {
+  document.getElementById("tools-panel").hidden = true;
+
+  const workspace = document.getElementById("tool-workspace");
+  document.getElementById("tool-workspace-title").textContent = tool.name;
+
+  const content = document.getElementById("tool-workspace-content");
+  content.innerHTML = "";
+  TOOL_RENDERERS[tool.id](content);
+
+  workspace.hidden = false;
+  workspace.scrollIntoView({ behavior: "smooth", block: "start" });
+}
+
+function closeToolWorkspace() {
+  document.getElementById("tool-workspace").hidden = true;
+  const panel = document.getElementById("tools-panel");
+  panel.hidden = false;
+  panel.scrollIntoView({ behavior: "smooth", block: "start" });
+}
+
 /* Back button + browser back/forward + direct #hash links */
 function setupCategoryRouting() {
   document.getElementById("back-to-categories").addEventListener("click", closeToolsPanel);
+  document.getElementById("back-to-tool-workspace").addEventListener("click", closeToolWorkspace);
 
   document.querySelectorAll("[data-category]").forEach(el => {
     el.addEventListener("click", (e) => {
@@ -149,8 +169,7 @@ function setupNav() {
 }
 
 /* ---------------------------------------------------------
-   MODAL (used for every locked / under-maintenance tool,
-   and for footer links that don't have a page yet)
+   MODAL
 --------------------------------------------------------- */
 function setupModal() {
   const backdrop = document.getElementById("modal-backdrop");
@@ -180,17 +199,11 @@ function closeModal() {
 
 /* ---------------------------------------------------------
    GLOBAL TOOL ACTIVITY COUNTER
-   ------------------------------------------------------------
-   Honest by design: this is a visual counter, not a claim about
-   real users. It grows steadily based on elapsed time, so it
-   always increases and never looks random or fake on reload.
-   Replace calculateActivityNumber() with a real API call later
-   to show true statistics.
 --------------------------------------------------------- */
 function calculateActivityNumber() {
-  const BASE_NUMBER = 84_213_940;     // starting point
+  const BASE_NUMBER = 84_213_940;
   const EPOCH = new Date("2026-01-01T00:00:00Z").getTime();
-  const GROWTH_PER_SECOND = 3.2;      // tune this to taste
+  const GROWTH_PER_SECOND = 3.2;
 
   const secondsElapsed = (Date.now() - EPOCH) / 1000;
   return Math.floor(BASE_NUMBER + secondsElapsed * GROWTH_PER_SECOND);
@@ -210,7 +223,6 @@ function setupActivityCounter() {
   }
   requestAnimationFrame(animate);
 
-  // keep it gently ticking upward while the page stays open
   setInterval(() => {
     const newTarget = calculateActivityNumber();
     if (newTarget > displayed) {
@@ -221,7 +233,7 @@ function setupActivityCounter() {
 }
 
 /* ---------------------------------------------------------
-   REVIEW FORM (not connected to a database yet)
+   REVIEW FORM
 --------------------------------------------------------- */
 function renderReviewForm() {
   const form = document.getElementById("review-form");
@@ -237,4 +249,4 @@ function renderReviewForm() {
 --------------------------------------------------------- */
 function setupFooterYear() {
   document.getElementById("footer-year").textContent = new Date().getFullYear();
-}
+                          }
