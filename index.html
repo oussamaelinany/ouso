@@ -14,7 +14,19 @@
   <link rel="stylesheet" href="css/style.css">
 </head>
 <body>
-
+<script>
+  function ousoDebug(msg) {
+    let box = document.getElementById('ouso-debug');
+    if (!box) {
+      box = document.createElement('div');
+      box.id = 'ouso-debug';
+      box.style.cssText = 'position:fixed;bottom:0;left:0;right:0;background:#000;color:#0f0;font-size:11px;padding:10px;z-index:99999;max-height:45vh;overflow:auto;white-space:pre-wrap;font-family:monospace;';
+      document.body.appendChild(box);
+    }
+    box.textContent += msg + '\n';
+  }
+  window.addEventListener('error', e => ousoDebug('ERROR: ' + e.message + ' @ ' + e.filename + ':' + e.lineno));
+</script>
   <a class="skip-link" href="#main">Skip to content</a>
 
   <!-- ============ HEADER ============ -->
