@@ -14,7 +14,7 @@
   <link rel="stylesheet" href="css/style.css">
 </head>
 <body>
-<script>window.addEventListener('error', e => alert('JS ERROR:\n' + e.message + '\nFile: ' + e.filename + '\nLine: ' + e.lineno));</script>
+
   <a class="skip-link" href="#main">Skip to content</a>
 
   <!-- ============ HEADER ============ -->
@@ -240,3 +240,24 @@
 <script src="js/app.js"></script>
 </body>
 </html>
+<script>
+  function ousoDebug(msg) {
+    let box = document.getElementById('ouso-debug');
+    if (!box) {
+      box = document.createElement('div');
+      box.id = 'ouso-debug';
+      box.style.cssText = 'position:fixed;bottom:0;left:0;right:0;background:#000;color:#0f0;font-size:11px;padding:10px;z-index:99999;max-height:45vh;overflow:auto;white-space:pre-wrap;font-family:monospace;';
+      document.body.appendChild(box);
+    }
+    box.textContent += msg + '\n';
+  }
+  window.addEventListener('error', e => ousoDebug('ERROR: ' + e.message + ' @ ' + e.filename + ':' + e.lineno));
+  window.addEventListener('DOMContentLoaded', () => {
+    ousoDebug('TOOL_RENDERERS keys: ' + Object.keys(window.TOOL_RENDERERS || {}).join(', '));
+  });
+  document.addEventListener('click', (e) => {
+    const card = e.target.closest('[data-open-tool]');
+    if (card) ousoDebug('Clicked: ' + card.dataset.openTool + ' | renderer exists: ' + !!(window.TOOL_RENDERERS && window.TOOL_RENDERERS[card.dataset.openTool]));
+  });
+</script>
+</body>
