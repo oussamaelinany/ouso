@@ -415,6 +415,7 @@ ul { margin: 0; padding: 0; list-style: none; }
   display: flex; align-items: center; justify-content: center;
   padding: 20px;
 }
+.modal-backdrop[hidden] { display: none; }
 .modal {
   background: var(--c-white);
   border-radius: var(--radius-l);
