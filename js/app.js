@@ -1,5 +1,5 @@
 /*
-  OUSO — APP.JS (Updated with all requested interactive features)
+  OUSO — APP.JS (Complete & Updated)
 */
 
 document.addEventListener("DOMContentLoaded", () => {
@@ -93,11 +93,9 @@ function openCategory(categoryId) {
 function toolBadge(status) {
   if (status === "working") return "";
   const icon = status === "api-ready" ? "icon-sparkle" : "icon-lock";
-  const label = status === "maintenance" && categoryMatchGaming(status) ? "Coming soon" : "Coming soon";
+  const label = "Coming soon";
   return `<span class="tool-badge"><svg><use href="assets/icons/icons.svg#${icon}"></use></svg>${label}</span>`;
 }
-
-function categoryMatchGaming(status) { return true; }
 
 function handleToolClick(tool) {
   if (!tool) return;
@@ -147,7 +145,7 @@ function closeToolsPanel() {
   window.scrollTo({ top: 0, behavior: "smooth" });
 }
 
-/* 3. Global Search (Including locked tools) */
+/* 3. Global Search */
 function setupSearch() {
   const input = document.getElementById("global-search");
   if (!input) return;
@@ -161,7 +159,7 @@ function setupSearch() {
   });
 }
 
-/* 4. Theme Toggle (Light / Dark) */
+/* 4. Theme Toggle */
 function setupThemeToggle() {
   const toggle = document.getElementById("theme-toggle");
   if (!toggle) return;
@@ -188,7 +186,7 @@ function setupShare() {
   });
 }
 
-/* 13. PWA Install Prompt (Shows once, saves state) */
+/* 13. PWA Install Prompt */
 function setupPwaPrompt() {
   const banner = document.getElementById("pwa-banner");
   const installBtn = document.getElementById("pwa-install-action");
@@ -197,7 +195,6 @@ function setupPwaPrompt() {
 
   if (localStorage.getItem("ouso_installed") === "true") return;
 
-  // Show banner after 3 seconds on home or tool open
   setTimeout(() => {
     banner.hidden = false;
   }, 3000);
@@ -210,7 +207,7 @@ function setupPwaPrompt() {
 
   closeBtn.addEventListener("click", () => {
     banner.hidden = true;
-    localStorage.setItem("ouso_installed", "true"); // Don't show again if dismissed
+    localStorage.setItem("ouso_installed", "true");
   });
 }
 
@@ -261,7 +258,7 @@ function closeModal() {
   document.getElementById("modal-backdrop").hidden = true;
 }
 
-/* 1. Random Fluctuating Visitor Counter (Range 155,888 - 8,656,641, changes every 1s) */
+/* 1. Random Fluctuating Visitor Counter */
 function setupActivityCounter() {
   const el = document.getElementById("activity-counter");
   if (!el) return;
@@ -271,7 +268,7 @@ function setupActivityCounter() {
   const max = 8656641;
 
   setInterval(() => {
-    const delta = Math.floor(Math.random() * 7000) - 3200; // Random up or down
+    const delta = Math.floor(Math.random() * 7000) - 3200;
     currentVal += delta;
     if (currentVal > max) currentVal = max;
     if (currentVal < min) currentVal = min;
