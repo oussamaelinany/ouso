@@ -49,7 +49,8 @@ const OUSO_TOOLS = [
   { id: "timestamp-converter", category: "tools", name: "Timestamp Converter", description: "Convert between Unix time and dates.", icon: "icon-clock", status: "working" },
 
   // ---------------- 11. MINI GAMES (Coming Soon) ----------------
-  { id: "breakout-game", category: "gaming", name: "Arcade Breakout", description: "Play a fun retro game during your break.", icon: "icon-sparkle", status: "maintenance" },
+// ---------------- MINI GAMES ----------------
+  { id: "breakout-game", category: "gaming", name: "Arcade Breakout", description: "Play a fun retro game during your break.", icon: "icon-sparkle", status: "working" },
   { id: "puzzle-game", category: "gaming", name: "Quick Puzzle", description: "Test your brain with a tile matching mini-game.", icon: "icon-grid", status: "maintenance" }
 ];
 
