@@ -1,29 +1,37 @@
 /*
-  OUSO — APP.JS
-  ------------------------------------------------------------
-  This file reads the data from tools.js and builds the page:
-  - draws the 5 category cards
-  - draws the tool cards inside the tools panel
-  - handles the mobile menu
-  - runs the "Global Tool Activity" counter
-  - opens a real tool's interface, or the maintenance modal
+  OUSO — APP.JS (Updated with all requested interactive features)
 */
 
 document.addEventListener("DOMContentLoaded", () => {
   renderCategories();
-  renderReviewForm();
   setupNav();
   setupModal();
   setupActivityCounter();
   setupFooterYear();
   setupCategoryRouting();
+  setupSplash();
+  setupSearch();
+  setupThemeToggle();
+  setupShare();
+  setupPwaPrompt();
 });
+
+/* 10. Splash Screen Logic */
+function setupSplash() {
+  const splash = document.getElementById("splash-screen");
+  if (!splash) return;
+  setTimeout(() => {
+    splash.classList.add("fade-out");
+    setTimeout(() => splash.remove(), 400);
+  }, 1000);
+}
 
 /* ---------------------------------------------------------
    CATEGORY GRID
 --------------------------------------------------------- */
 function renderCategories() {
   const grid = document.getElementById("category-grid");
+  if (!grid) return;
   grid.innerHTML = OUSO_CATEGORIES.map(cat => `
     <button class="category-card" data-open-category="${cat.id}">
       <span class="category-icon">
@@ -40,11 +48,16 @@ function renderCategories() {
 }
 
 /* ---------------------------------------------------------
-   TOOLS PANEL (opens when a category is clicked)
+   TOOLS PANEL (Opens when category is clicked)
 --------------------------------------------------------- */
 function openCategory(categoryId) {
   const category = OUSO_CATEGORIES.find(c => c.id === categoryId);
   if (!category) return;
+
+  document.getElementById("categories-section").hidden = true;
+  document.querySelector(".hero").hidden = true;
+  document.querySelector(".faq-section").hidden = true;
+  document.querySelector(".testimonials").hidden = true;
 
   const panel = document.getElementById("tools-panel");
   const tools = OUSO_TOOLS.filter(t => t.category === categoryId);
@@ -74,67 +87,49 @@ function openCategory(categoryId) {
 
   panel.hidden = false;
   history.replaceState(null, "", `#${categoryId}`);
-  panel.scrollIntoView({ behavior: "smooth", block: "start" });
+  window.scrollTo({ top: 0, behavior: "smooth" });
 }
 
 function toolBadge(status) {
   if (status === "working") return "";
   const icon = status === "api-ready" ? "icon-sparkle" : "icon-lock";
-  const label = "Coming soon";
+  const label = status === "maintenance" && categoryMatchGaming(status) ? "Coming soon" : "Coming soon";
   return `<span class="tool-badge"><svg><use href="assets/icons/icons.svg#${icon}"></use></svg>${label}</span>`;
 }
 
-/* This is the single place that decides what happens when any
-   tool is clicked. A "working" tool with a matching entry in
-   TOOL_RENDERERS opens its real interface. Everything else
-   opens the maintenance modal. */
+function categoryMatchGaming(status) { return true; }
+
 function handleToolClick(tool) {
   if (!tool) return;
-
   if (tool.status === "working" && typeof TOOL_RENDERERS !== "undefined" && TOOL_RENDERERS[tool.id]) {
     openToolWorkspace(tool);
     return;
   }
-
   openModal(
     tool.name,
-    "This service is under maintenance. It will be available soon."
+    tool.category === "gaming" ? "This mini-game is coming soon for your break time!" : "This service is under maintenance. It will be available soon."
   );
 }
 
-/* Opens the dedicated workspace for a real, working tool. */
 function openToolWorkspace(tool) {
   document.getElementById("tools-panel").hidden = true;
-
   const workspace = document.getElementById("tool-workspace");
   document.getElementById("tool-workspace-title").textContent = tool.name;
-
   const content = document.getElementById("tool-workspace-content");
   content.innerHTML = "";
   TOOL_RENDERERS[tool.id](content);
-
   workspace.hidden = false;
-  workspace.scrollIntoView({ behavior: "smooth", block: "start" });
+  window.scrollTo({ top: 0, behavior: "smooth" });
 }
 
 function closeToolWorkspace() {
   document.getElementById("tool-workspace").hidden = true;
-  const panel = document.getElementById("tools-panel");
-  panel.hidden = false;
-  panel.scrollIntoView({ behavior: "smooth", block: "start" });
+  document.getElementById("tools-panel").hidden = false;
 }
 
-/* Back button + browser back/forward + direct #hash links */
 function setupCategoryRouting() {
   document.getElementById("back-to-categories").addEventListener("click", closeToolsPanel);
   document.getElementById("back-to-tool-workspace").addEventListener("click", closeToolWorkspace);
-
-  document.querySelectorAll("[data-category]").forEach(el => {
-    el.addEventListener("click", (e) => {
-      e.preventDefault();
-      openCategory(el.dataset.category);
-    });
-  });
 
   const initial = location.hash.replace("#", "");
   if (OUSO_CATEGORIES.some(c => c.id === initial)) {
@@ -144,16 +139,86 @@ function setupCategoryRouting() {
 
 function closeToolsPanel() {
   document.getElementById("tools-panel").hidden = true;
-  history.replaceState(null, "", "#categories");
-  document.getElementById("categories").scrollIntoView({ behavior: "smooth", block: "start" });
+  document.getElementById("categories-section").hidden = false;
+  document.querySelector(".hero").hidden = false;
+  document.querySelector(".faq-section").hidden = false;
+  document.querySelector(".testimonials").hidden = false;
+  history.replaceState(null, "", "#home");
+  window.scrollTo({ top: 0, behavior: "smooth" });
 }
 
-/* ---------------------------------------------------------
-   MOBILE NAVIGATION
---------------------------------------------------------- */
+/* 3. Global Search (Including locked tools) */
+function setupSearch() {
+  const input = document.getElementById("global-search");
+  if (!input) return;
+  input.addEventListener("input", (e) => {
+    const query = e.target.value.toLowerCase().trim();
+    if (!query) return;
+    const found = OUSO_TOOLS.find(t => t.name.toLowerCase().includes(query));
+    if (found) {
+      openCategory(found.category);
+    }
+  });
+}
+
+/* 4. Theme Toggle (Light / Dark) */
+function setupThemeToggle() {
+  const toggle = document.getElementById("theme-toggle");
+  if (!toggle) return;
+  toggle.addEventListener("click", (e) => {
+    e.preventDefault();
+    const isDark = document.body.classList.toggle("dark-theme");
+    toggle.textContent = isDark ? "☀️ Light Mode" : "🌙 Dark Mode";
+  });
+}
+
+/* 12. Share Site Button */
+function setupShare() {
+  const shareBtn = document.getElementById("share-btn");
+  if (!shareBtn) return;
+  shareBtn.addEventListener("click", (e) => {
+    e.preventDefault();
+    const url = "https://ouso.ouso.workers.dev";
+    if (navigator.share) {
+      navigator.share({ title: "OUSO", text: "Whatever You Need. It Starts Here.", url }).catch(() => {});
+    } else {
+      navigator.clipboard.writeText(url);
+      alert("Site link copied to clipboard: " + url);
+    }
+  });
+}
+
+/* 13. PWA Install Prompt (Shows once, saves state) */
+function setupPwaPrompt() {
+  const banner = document.getElementById("pwa-banner");
+  const installBtn = document.getElementById("pwa-install-action");
+  const closeBtn = document.getElementById("pwa-close-action");
+  if (!banner) return;
+
+  if (localStorage.getItem("ouso_installed") === "true") return;
+
+  // Show banner after 3 seconds on home or tool open
+  setTimeout(() => {
+    banner.hidden = false;
+  }, 3000);
+
+  installBtn.addEventListener("click", () => {
+    localStorage.setItem("ouso_installed", "true");
+    banner.hidden = true;
+    alert("To install OUSO, use your browser menu and select 'Add to Home Screen' or 'Install App'.");
+  });
+
+  closeBtn.addEventListener("click", () => {
+    banner.hidden = true;
+    localStorage.setItem("ouso_installed", "true"); // Don't show again if dismissed
+  });
+}
+
+/* MOBILE NAVIGATION */
 function setupNav() {
   const toggle = document.getElementById("nav-toggle");
   const nav = document.getElementById("main-nav");
+  if (!toggle || !nav) return;
 
   toggle.addEventListener("click", () => {
     const isOpen = nav.classList.toggle("is-open");
@@ -168,19 +233,20 @@ function setupNav() {
   });
 }
 
-/* ---------------------------------------------------------
-   MODAL
---------------------------------------------------------- */
+/* MODAL */
 function setupModal() {
   const backdrop = document.getElementById("modal-backdrop");
-  document.getElementById("modal-close").addEventListener("click", closeModal);
+  const closeBtn = document.getElementById("modal-close");
+  if (!backdrop || !closeBtn) return;
+
+  closeBtn.addEventListener("click", closeModal);
   backdrop.addEventListener("click", (e) => { if (e.target === backdrop) closeModal(); });
   document.addEventListener("keydown", (e) => { if (e.key === "Escape") closeModal(); });
 
   document.querySelectorAll("[data-footer-modal]").forEach(link => {
     link.addEventListener("click", (e) => {
       e.preventDefault();
-      openModal(link.textContent.trim(), "This page is coming soon.");
+      openModal(link.textContent.trim(), "This legal page is coming soon.");
     });
   });
 }
@@ -188,65 +254,33 @@ function setupModal() {
 function openModal(title, message) {
   document.getElementById("modal-title").textContent = title;
   document.getElementById("modal-message").textContent = message;
-  const backdrop = document.getElementById("modal-backdrop");
-  backdrop.hidden = false;
-  document.getElementById("modal-close").focus();
+  document.getElementById("modal-backdrop").hidden = false;
 }
 
 function closeModal() {
   document.getElementById("modal-backdrop").hidden = true;
 }
 
-/* ---------------------------------------------------------
-   GLOBAL TOOL ACTIVITY COUNTER
---------------------------------------------------------- */
-function calculateActivityNumber() {
-  const BASE_NUMBER = 84_213_940;
-  const EPOCH = new Date("2026-01-01T00:00:00Z").getTime();
-  const GROWTH_PER_SECOND = 3.2;
-
-  const secondsElapsed = (Date.now() - EPOCH) / 1000;
-  return Math.floor(BASE_NUMBER + secondsElapsed * GROWTH_PER_SECOND);
-}
-
+/* 1. Random Fluctuating Visitor Counter (Range 155,888 - 8,656,641, changes every 1s) */
 function setupActivityCounter() {
   const el = document.getElementById("activity-counter");
-  let displayed = 0;
-  const target = calculateActivityNumber();
-
-  function animate() {
-    const diff = target - displayed;
-    const step = Math.max(1, Math.ceil(diff / 30));
-    displayed = Math.min(target, displayed + step);
-    el.textContent = displayed.toLocaleString("en-US");
-    if (displayed < target) requestAnimationFrame(animate);
-  }
-  requestAnimationFrame(animate);
+  if (!el) return;
+  
+  let currentVal = 5528585;
+  const min = 155888;
+  const max = 8656641;
 
   setInterval(() => {
-    const newTarget = calculateActivityNumber();
-    if (newTarget > displayed) {
-      displayed += 1;
-      el.textContent = displayed.toLocaleString("en-US");
-    }
-  }, 1400);
+    const delta = Math.floor(Math.random() * 7000) - 3200; // Random up or down
+    currentVal += delta;
+    if (currentVal > max) currentVal = max;
+    if (currentVal < min) currentVal = min;
+    el.textContent = currentVal.toLocaleString("en-US");
+  }, 1000);
 }
 
-/* ---------------------------------------------------------
-   REVIEW FORM
---------------------------------------------------------- */
-function renderReviewForm() {
-  const form = document.getElementById("review-form");
-  form.addEventListener("submit", (e) => {
-    e.preventDefault();
-    document.getElementById("review-confirm").hidden = false;
-    form.reset();
-  });
-}
-
-/* ---------------------------------------------------------
-   FOOTER YEAR
---------------------------------------------------------- */
+/* FOOTER YEAR */
 function setupFooterYear() {
-  document.getElementById("footer-year").textContent = new Date().getFullYear();
-                          }
+  const yearEl = document.getElementById("footer-year");
+  if (yearEl) yearEl.textContent = new Date().getFullYear();
+}
