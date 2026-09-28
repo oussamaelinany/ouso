@@ -1,54 +1,10 @@
-/*
-  OUSO — TOOLS DATA FILE
-  ------------------------------------------------------------
-  This file is the single "master list" of every category and
-  every tool on the website.
-
-  HOW TO ADD A NEW TOOL LATER (no other file needs to change):
-    1. Find the category it belongs to in OUSO_TOOLS below.
-    2. Copy one existing tool object.
-    3. Change id, name, description and icon.
-    4. Set status to "maintenance" until it is ready.
-
-  STATUS VALUES:
-    "maintenance" -> shows the lock badge and the
-                     "under maintenance" message when clicked.
-    "working"     -> tool is fully working in the browser.
-    "api-ready"   -> interface is ready, waiting for an
-                     external API to be connected.
-*/
-
 const OUSO_CATEGORIES = [
-  {
-    id: "images",
-    name: "Images",
-    description: "Edit, convert and enhance your images.",
-    icon: "icon-image"
-  },
-  {
-    id: "videos",
-    name: "Videos",
-    description: "Useful tools for working with video files.",
-    icon: "icon-video"
-  },
-  {
-    id: "ai-content",
-    name: "AI Content",
-    description: "Create content faster with AI assistance.",
-    icon: "icon-sparkle"
-  },
-  {
-    id: "pdf",
-    name: "PDF",
-    description: "Convert, manage and optimize PDF files.",
-    icon: "icon-pdf"
-  },
-  {
-    id: "tools",
-    name: "Tools",
-    description: "More handy utilities, all in one place.",
-    icon: "icon-grid"
-  }
+  { id: "images", name: "Images", description: "Edit, convert and enhance your images.", icon: "icon-image" },
+  { id: "videos", name: "Videos", description: "Useful tools for working with video files.", icon: "icon-video" },
+  { id: "ai-content", name: "AI Content", description: "Create content faster with AI assistance.", icon: "icon-sparkle" },
+  { id: "pdf", name: "PDF", description: "Convert, manage and optimize PDF files.", icon: "icon-pdf" },
+  { id: "tools", name: "Tools", description: "More handy utilities, all in one place.", icon: "icon-grid" },
+  { id: "gaming", name: "Mini Games", description: "Relax and play a quick game during your break.", icon: "icon-sparkle" } // 11. New category
 ];
 
 const OUSO_TOOLS = [
@@ -90,10 +46,11 @@ const OUSO_TOOLS = [
   { id: "color-tools", category: "tools", name: "Color Tools", description: "Convert HEX, RGB and HSL colors.", icon: "icon-palette", status: "working" },
   { id: "password-generator", category: "tools", name: "Password Generator", description: "Create strong, random passwords.", icon: "icon-key", status: "working" },
   { id: "base64-tool", category: "tools", name: "Base64 Encoder/Decoder", description: "Encode or decode Base64 text instantly.", icon: "icon-code", status: "working" },
-  { id: "timestamp-converter", category: "tools", name: "Timestamp Converter", description: "Convert between Unix time and dates.", icon: "icon-clock", status: "working" }
+  { id: "timestamp-converter", category: "tools", name: "Timestamp Converter", description: "Convert between Unix time and dates.", icon: "icon-clock", status: "working" },
+
+  // ---------------- 11. MINI GAMES (Coming Soon) ----------------
+  { id: "breakout-game", category: "gaming", name: "Arcade Breakout", description: "Play a fun retro game during your break.", icon: "icon-sparkle", status: "maintenance" },
+  { id: "puzzle-game", category: "gaming", name: "Quick Puzzle", description: "Test your brain with a tile matching mini-game.", icon: "icon-grid", status: "maintenance" }
 ];
 
-/* Shared registry that every tool-interface file (image-tools.js,
-   pdf-tools.js, misc-tools.js...) adds its render functions to.
-   Declared once here so those files never redeclare it. */
 const TOOL_RENDERERS = {};
