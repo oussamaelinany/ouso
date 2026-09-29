@@ -1,5 +1,5 @@
 /*
-  OUSO — TOOLS DATA FILE (Updated with Gaming & Cat Icon)
+  OUSO — TOOLS DATA FILE (With Direct Cat Logo Icon)
 */
 
 const OUSO_CATEGORIES = [
