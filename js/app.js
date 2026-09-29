@@ -1,5 +1,5 @@
 /*
-  OUSO — APP.JS (Updated: Direct Opening for Gaming)
+  OUSO — APP.JS
 */
 
 document.addEventListener("DOMContentLoaded", () => {
@@ -27,7 +27,7 @@ function setupSplash() {
 }
 
 /* ---------------------------------------------------------
-   CATEGORY GRID (With Direct Cat Logo for Gaming)
+   CATEGORY GRID (With Correct Cat Logo)
 --------------------------------------------------------- */
 function renderCategories() {
   const grid = document.getElementById("category-grid");
@@ -67,7 +67,6 @@ function openCategory(categoryId) {
   const category = OUSO_CATEGORIES.find(c => c.id === categoryId);
   if (!category) return;
 
-  // إذا كانت الفئة هي الألعاب، نفتح اللعبة مباشرة بدون إظهار قائمة فرعية
   if (categoryId === "gaming") {
     const tool = OUSO_TOOLS.find(t => t.category === "gaming" && t.status === "working");
     if (tool) {
@@ -134,7 +133,6 @@ function handleToolClick(tool) {
 }
 
 function openToolWorkspace(tool) {
-  // إذا كانت اللعبة، نخفي لوحة الأدوات إن كانت مفتوحة
   const panel = document.getElementById("tools-panel");
   if (panel) panel.hidden = true;
 
@@ -142,7 +140,9 @@ function openToolWorkspace(tool) {
   document.getElementById("tool-workspace-title").textContent = tool.name;
   const content = document.getElementById("tool-workspace-content");
   content.innerHTML = "";
-  TOOL_RENDERERS[tool.id](content);
+  if (typeof TOOL_RENDERERS !== "undefined" && TOOL_RENDERERS[tool.id]) {
+    TOOL_RENDERERS[tool.id](content);
+  }
   workspace.hidden = false;
   window.scrollTo({ top: 0, behavior: "smooth" });
 }
@@ -312,4 +312,4 @@ function setupActivityCounter() {
 function setupFooterYear() {
   const yearEl = document.getElementById("footer-year");
   if (yearEl) yearEl.textContent = new Date().getFullYear();
-}
+                          }
