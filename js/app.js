@@ -1,5 +1,5 @@
 /*
-  OUSO — APP.JS (Complete & Updated)
+  OUSO — APP.JS (Updated: Direct Opening for Gaming)
 */
 
 document.addEventListener("DOMContentLoaded", () => {
@@ -27,20 +27,33 @@ function setupSplash() {
 }
 
 /* ---------------------------------------------------------
-   CATEGORY GRID
+   CATEGORY GRID (With Direct Cat Logo for Gaming)
 --------------------------------------------------------- */
 function renderCategories() {
   const grid = document.getElementById("category-grid");
   if (!grid) return;
-  grid.innerHTML = OUSO_CATEGORIES.map(cat => `
-    <button class="category-card" data-open-category="${cat.id}">
-      <span class="category-icon">
-        <svg width="22" height="22"><use href="assets/icons/icons.svg#${cat.icon}"></use></svg>
-      </span>
-      <h3>${cat.name}</h3>
-      <p>${cat.description}</p>
-    </button>
-  `).join("");
+
+  grid.innerHTML = OUSO_CATEGORIES.map(cat => {
+    const isGaming = cat.id === "gaming";
+    const iconHtml = isGaming ? `
+      <svg width="24" height="24" viewBox="0 0 100 100" fill="#C6A15B">
+        <path d="M30 35 L20 12 L42 26 Z M70 35 L80 12 L58 26 Z M22 45 C22 33 78 33 78 45 C78 70 72 88 50 88 C28 88 22 70 22 45 Z"/>
+        <circle cx="38" cy="46" r="5" fill="#0B0B0C"/>
+        <circle cx="62" cy="46" r="5" fill="#0B0B0C"/>
+        <path d="M43 58 Q50 65 57 58" stroke="#0B0B0C" stroke-width="4" fill="none" stroke-linecap="round"/>
+      </svg>
+    ` : `
+      <svg width="22" height="22"><use href="assets/icons/icons.svg#${cat.icon}"></use></svg>
+    `;
+
+    return `
+      <button class="category-card" data-open-category="${cat.id}">
+        <span class="category-icon">${iconHtml}</span>
+        <h3>${cat.name}</h3>
+        <p>${cat.description}</p>
+      </button>
+    `;
+  }).join("");
 
   grid.querySelectorAll("[data-open-category]").forEach(btn => {
     btn.addEventListener("click", () => openCategory(btn.dataset.openCategory));
@@ -48,11 +61,25 @@ function renderCategories() {
 }
 
 /* ---------------------------------------------------------
-   TOOLS PANEL (Opens when category is clicked)
+   TOOLS PANEL & DIRECT OPENING FOR GAMING
 --------------------------------------------------------- */
 function openCategory(categoryId) {
   const category = OUSO_CATEGORIES.find(c => c.id === categoryId);
   if (!category) return;
+
+  // إذا كانت الفئة هي الألعاب، نفتح اللعبة مباشرة بدون إظهار قائمة فرعية
+  if (categoryId === "gaming") {
+    const tool = OUSO_TOOLS.find(t => t.category === "gaming" && t.status === "working");
+    if (tool) {
+      document.getElementById("categories-section").hidden = true;
+      document.querySelector(".hero").hidden = true;
+      document.querySelector(".faq-section").hidden = true;
+      document.querySelector(".testimonials").hidden = true;
+      openToolWorkspace(tool);
+      history.replaceState(null, "", `#${categoryId}`);
+      return;
+    }
+  }
 
   document.getElementById("categories-section").hidden = true;
   document.querySelector(".hero").hidden = true;
@@ -103,14 +130,14 @@ function handleToolClick(tool) {
     openToolWorkspace(tool);
     return;
   }
-  openModal(
-    tool.name,
-    tool.category === "gaming" ? "This mini-game is coming soon for your break time!" : "This service is under maintenance. It will be available soon."
-  );
+  openModal(tool.name, "This service is under maintenance. It will be available soon.");
 }
 
 function openToolWorkspace(tool) {
-  document.getElementById("tools-panel").hidden = true;
+  // إذا كانت اللعبة، نخفي لوحة الأدوات إن كانت مفتوحة
+  const panel = document.getElementById("tools-panel");
+  if (panel) panel.hidden = true;
+
   const workspace = document.getElementById("tool-workspace");
   document.getElementById("tool-workspace-title").textContent = tool.name;
   const content = document.getElementById("tool-workspace-content");
@@ -122,7 +149,12 @@ function openToolWorkspace(tool) {
 
 function closeToolWorkspace() {
   document.getElementById("tool-workspace").hidden = true;
-  document.getElementById("tools-panel").hidden = false;
+  document.getElementById("categories-section").hidden = false;
+  document.querySelector(".hero").hidden = false;
+  document.querySelector(".faq-section").hidden = false;
+  document.querySelector(".testimonials").hidden = false;
+  history.replaceState(null, "", "#home");
+  window.scrollTo({ top: 0, behavior: "smooth" });
 }
 
 function setupCategoryRouting() {
