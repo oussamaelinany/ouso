@@ -1,14 +1,14 @@
 /*
-  OUSO — TOOLS DATA FILE (Updated: Direct OUSO Game)
+  OUSO — TOOLS DATA FILE
 */
 
 const OUSO_CATEGORIES = [
-  { id: "images", name: "Images", description: "Edit, convert and enhance your images.", icon: "icon-image" },
-  { id: "videos", name: "Videos", description: "Useful tools for working with video files.", icon: "icon-video" },
-  { id: "ai-content", name: "AI Content", description: "Create content faster with AI assistance.", icon: "icon-sparkle" },
-  { id: "pdf", name: "PDF", description: "Convert, manage and optimize PDF files.", icon: "icon-pdf" },
-  { id: "tools", name: "Tools", description: "More handy utilities, all in one place.", icon: "icon-grid" },
-  { id: "gaming", name: "OUSO Game", description: "Relax and play a quick game during your break.", icon: "cat-logo" }
+  { id: "images", name: "صور", description: "قم بتحرير صورك وتحويلها وتحسينها.", icon: "icon-image" },
+  { id: "videos", name: "مقاطع فيديو", description: "أدوات مفيدة للعمل مع ملفات الفيديو.", icon: "icon-video" },
+  { id: "ai-content", name: "محتوى الذكاء الاصطناعي", description: "أنشئ محتوى أسرع بمساعدة الذكاء الاصطناعي.", icon: "icon-sparkle" },
+  { id: "pdf", name: "ملف PDF", description: "تحويل ملفات PDF وإدارتها وتحسينها.", icon: "icon-pdf" },
+  { id: "tools", name: "أدوات", description: "أدوات مساعدة أكثر فائدة، كلها في مكان واحد.", icon: "icon-grid" },
+  { id: "gaming", name: "لعبة OUSO", description: "استرخِ والعب لعبة سريعة خلال استراحتك.", icon: "cat-logo" }
 ];
 
 const OUSO_TOOLS = [
@@ -53,7 +53,7 @@ const OUSO_TOOLS = [
   { id: "timestamp-converter", category: "tools", name: "Timestamp Converter", description: "Convert between Unix time and dates.", icon: "icon-clock", status: "working" },
 
   // ---------------- GAMING ----------------
-  { id: "breakout-game", category: "gaming", name: "OUSO Game", description: "Play OUSO jumping game during your break.", icon: "icon-sparkle", status: "working" }
+  { id: "breakout-game", category: "gaming", name: "لعبة OUSO", description: "العَب لعبة القفز OUSO خلال استراحتك.", icon: "icon-sparkle", status: "working" }
 ];
 
 const TOOL_RENDERERS = {};
