@@ -1,5 +1,5 @@
 /*
-  OUSO — TOOLS DATA FILE (With Direct Cat Logo Icon)
+  OUSO — TOOLS DATA FILE (Updated: Direct OUSO Game)
 */
 
 const OUSO_CATEGORIES = [
@@ -8,7 +8,7 @@ const OUSO_CATEGORIES = [
   { id: "ai-content", name: "AI Content", description: "Create content faster with AI assistance.", icon: "icon-sparkle" },
   { id: "pdf", name: "PDF", description: "Convert, manage and optimize PDF files.", icon: "icon-pdf" },
   { id: "tools", name: "Tools", description: "More handy utilities, all in one place.", icon: "icon-grid" },
-  { id: "gaming", name: "Mini Games", description: "Relax and play a quick game during your break.", icon: "cat-logo" }
+  { id: "gaming", name: "OUSO Game", description: "Relax and play a quick game during your break.", icon: "cat-logo" }
 ];
 
 const OUSO_TOOLS = [
@@ -52,9 +52,8 @@ const OUSO_TOOLS = [
   { id: "base64-tool", category: "tools", name: "Base64 Encoder/Decoder", description: "Encode or decode Base64 text instantly.", icon: "icon-code", status: "working" },
   { id: "timestamp-converter", category: "tools", name: "Timestamp Converter", description: "Convert between Unix time and dates.", icon: "icon-clock", status: "working" },
 
-  // ---------------- MINI GAMES ----------------
-  { id: "breakout-game", category: "gaming", name: "Arcade Breakout", description: "Play a fun retro game during your break.", icon: "icon-sparkle", status: "working" },
-  { id: "puzzle-game", category: "gaming", name: "Quick Puzzle", description: "Test your brain with a tile matching mini-game.", icon: "icon-grid", status: "maintenance" }
+  // ---------------- GAMING ----------------
+  { id: "breakout-game", category: "gaming", name: "OUSO Game", description: "Play OUSO jumping game during your break.", icon: "icon-sparkle", status: "working" }
 ];
 
 const TOOL_RENDERERS = {};
