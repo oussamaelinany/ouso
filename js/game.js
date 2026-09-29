@@ -220,4 +220,4 @@ function renderBreakoutGame(root) {
     draw();
     requestAnimationFrame(loop);
   }
-        }
+}
