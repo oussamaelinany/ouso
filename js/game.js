@@ -6,7 +6,9 @@
     - platforms shrink as your score grows (min width enforced)
     - some platforms drift left/right, so timing matters
     - landing tolerance cut from 8px to 3px (must land more precisely)
-    - fall speed cap removed so late-game mistakes punish harder
+    - each platform only ever pays out points ONCE (10 points),
+      so bouncing on the same spot earns nothing more — climbing
+      across many new platforms is the only way to score high
 */
 
 TOOL_RENDERERS["breakout-game"] = renderBreakoutGame;
@@ -35,32 +37,29 @@ function renderBreakoutGame(root) {
   let gameRunning = false;
   let score = 0;
 
-  // Cat player object
   let cat = {
     x: 185,
     y: 350,
-    w: 26,          // slightly smaller hitbox = harder to land
+    w: 26,
     h: 26,
     vx: 0,
     vy: 0,
-    jump: -10.5      // weaker jump relative to gravity than before
+    jump: -10.5
   };
 
-  const GRAVITY = 0.55;      // was 0.42 — falls noticeably faster
-  const LAND_TOLERANCE = 3;  // was 8 — must land more precisely
+  const GRAVITY = 0.55;
+  const LAND_TOLERANCE = 3;
   const MOVE_SPEED = 6;
 
-  // Platforms — width shrinks and drift speed increases with score
   let platforms = [];
 
   function platformWidthFor(currentScore) {
-    // starts at 70, shrinks toward a floor of 34 as score climbs
     return Math.max(34, 70 - Math.floor(currentScore / 120) * 4);
   }
 
   function makePlatform(x, y) {
     const w = platformWidthFor(score);
-    const isMoving = Math.random() < Math.min(0.15 + score / 1500, 0.55); // more moving platforms over time
+    const isMoving = Math.random() < Math.min(0.15 + score / 1500, 0.55);
     return {
       x: Math.min(Math.max(x, 0), canvas.width - w),
       y,
@@ -68,7 +67,8 @@ function renderBreakoutGame(root) {
       h: 10,
       moving: isMoving,
       dir: Math.random() < 0.5 ? 1 : -1,
-      speed: 1 + Math.random() * (1.4 + score / 900)
+      speed: 1 + Math.random() * (1.4 + score / 900),
+      scored: false // each platform only ever pays out points once
     };
   }
 
@@ -79,7 +79,6 @@ function renderBreakoutGame(root) {
       makePlatform(240, 190),
       makePlatform(130, 70)
     ];
-    // force the very first platform static so the game is always fair at the start
     platforms[0].moving = false;
   }
 
@@ -96,7 +95,6 @@ function renderBreakoutGame(root) {
 
   startBtn.addEventListener("click", startGame);
 
-  // Controls
   window.addEventListener("keydown", (e) => {
     if (!gameRunning) return;
     if (e.code === "Space" || e.code === "ArrowUp") {
@@ -123,7 +121,6 @@ function renderBreakoutGame(root) {
     if (cat.x < 0) cat.x = 0;
     if (cat.x > canvas.width - cat.w) cat.x = canvas.width - cat.w;
 
-    // Move drifting platforms and bounce them off the walls
     platforms.forEach(p => {
       if (p.moving) {
         p.x += p.dir * p.speed;
@@ -131,7 +128,8 @@ function renderBreakoutGame(root) {
       }
     });
 
-    // Platform collision — tighter tolerance than before
+    // Landing always makes the cat jump again, but points are only
+    // ever paid out the FIRST time a given platform is landed on.
     platforms.forEach(p => {
       if (
         cat.vy > 0 &&
@@ -141,11 +139,13 @@ function renderBreakoutGame(root) {
         cat.y + cat.h <= p.y + p.h + LAND_TOLERANCE
       ) {
         cat.vy = cat.jump;
-        score += 15;
+        if (!p.scored) {
+          score += 10;
+          p.scored = true;
+        }
       }
     });
 
-    // Scroll platforms upward as the cat climbs
     if (cat.y < 200) {
       let diff = 200 - cat.y;
       cat.y = 200;
@@ -155,6 +155,7 @@ function renderBreakoutGame(root) {
           const fresh = makePlatform(Math.random() * (canvas.width - 40), 0);
           p.x = fresh.x; p.y = 0; p.w = fresh.w;
           p.moving = fresh.moving; p.dir = fresh.dir; p.speed = fresh.speed;
+          p.scored = false; // it's a "new" platform now, so it can pay out again
         }
       });
     }
@@ -171,7 +172,6 @@ function renderBreakoutGame(root) {
     ctx.fillStyle = "#0B0B0C";
     ctx.fillRect(0, 0, canvas.width, canvas.height);
 
-    // Draw Platforms (moving ones drawn slightly brighter as a visual cue)
     platforms.forEach(p => {
       ctx.fillStyle = p.moving ? "#E7C77E" : "#C6A15B";
       ctx.beginPath();
@@ -179,7 +179,6 @@ function renderBreakoutGame(root) {
       ctx.fill();
     });
 
-    // Draw OUSO Cat
     ctx.fillStyle = "#C6A15B";
 
     ctx.beginPath();
