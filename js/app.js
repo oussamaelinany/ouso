@@ -1,4 +1,4 @@
-// إدارة اللغات ونظام التوجيه والـ SEO بشكل متكامل
+// إدارة اللغات ونظام التوجيه والـ SEO وتنظيم حاويات الإعلانات
 let currentLang = localStorage.getItem("ouso_lang") || "en";
 
 document.addEventListener("DOMContentLoaded", () => {
@@ -11,7 +11,7 @@ function initRouter() {
 }
 
 function setLanguage(lang) {
-    if (translations && translations[lang]) {
+    if (typeof translations !== "undefined" && translations[lang]) {
         currentLang = lang;
         localStorage.setItem("ouso_lang", lang);
         handleRoute();
@@ -22,19 +22,16 @@ function t(section, key) {
     if (typeof translations !== "undefined" && translations[currentLang] && translations[currentLang][section] && translations[currentLang][section][key]) {
         return translations[currentLang][section][key];
     }
-    // Fallback إلى الإنجليزية إذا لم تتوفر الترجمة
     return translations?.["en"]?.[section]?.[key] || key;
 }
 
 function handleRoute() {
     const path = window.location.pathname;
     
-    // ضبط اتجاه الصفحة والـ lang حسب اللغة المختارة
     const langData = (typeof translations !== "undefined" && translations[currentLang]) ? translations[currentLang] : { dir: "ltr" };
     document.documentElement.setAttribute("lang", currentLang);
     document.documentElement.setAttribute("dir", langData.dir || "ltr");
 
-    // بناء قائمة التنقل العلوية مع محدد اللغات الحديث في Settings/Navigation
     renderNavbar();
 
     if (path.startsWith("/tools/")) {
@@ -42,6 +39,7 @@ function handleRoute() {
         const tool = ousoData.tools.find(t => t.slug.endsWith(toolSlug));
         if (tool) {
             renderToolPage(tool);
+            renderFooterWithAd();
             return;
         }
     } else if (path.startsWith("/category/")) {
@@ -49,14 +47,17 @@ function handleRoute() {
         const category = ousoData.categories.find(c => c.slug.endsWith(catSlug));
         if (category) {
             renderCategoryPage(category);
+            renderFooterWithAd();
             return;
         }
     } else if (path.startsWith("/settings")) {
         renderSettingsPage();
+        renderFooterWithAd();
         return;
     }
     
     renderHomePage();
+    renderFooterWithAd();
 }
 
 function renderNavbar() {
@@ -87,7 +88,6 @@ function renderNavbar() {
         document.body.prepend(header);
     }
     
-    // تحديث نصوص الـ Navigation
     document.getElementById("nav-home").textContent = t("nav", "home");
     document.getElementById("nav-settings").textContent = t("nav", "settings");
     
@@ -115,6 +115,22 @@ function updateSEO(data) {
     }
 }
 
+function renderFooterWithAd() {
+    let footerContainer = document.getElementById("site-footer-container");
+    if (!footerContainer) {
+        footerContainer = document.createElement("footer");
+        footerContainer.id = "site-footer-container";
+        footerContainer.className = "site-footer";
+        document.body.appendChild(footerContainer);
+    }
+    
+    footerContainer.innerHTML = `
+        <!-- Ad Slot: Footer / قبل التذليل -->
+        <div class="ad-slot ad-slot-bottom" id="ad-footer"></div>
+        <p>&copy; 2026 OUSO Platform. All rights reserved.</p>
+    `;
+}
+
 function renderHomePage() {
     updateSEO({
         title: (translations && translations[currentLang]?.home?.welcome) || "OUSO Platform",
@@ -128,8 +144,15 @@ function renderHomePage() {
     if (appContainer) {
         appContainer.innerHTML = `
             <main style="padding: 2rem;">
+                <!-- Ad Slot: Home Top -->
+                <div class="ad-slot ad-slot-top" id="ad-home-top"></div>
+                
                 <h1>${t("home", "welcome")}</h1>
                 <p>${t("home", "subtitle")}</p>
+                
+                <!-- Ad Slot: Home Middle -->
+                <div class="ad-slot ad-slot-middle" id="ad-home-middle"></div>
+
                 <section class="categories-list">
                     <!-- عرض الفئات والأدوات -->
                 </section>
@@ -149,6 +172,9 @@ function renderSettingsPage() {
     if (appContainer) {
         appContainer.innerHTML = `
             <main style="padding: 2rem;">
+                <!-- Ad Slot: Settings Top -->
+                <div class="ad-slot ad-slot-top" id="ad-settings-top"></div>
+
                 <h2>${t("settings", "title")}</h2>
                 <div style="margin-top: 1rem;">
                     <label for="settings-lang-switcher" style="display: block; margin-bottom: 0.5rem; font-weight: 600;">${t("settings", "language")}:</label>
@@ -179,8 +205,14 @@ function renderCategoryPage(category) {
     if (appContainer) {
         appContainer.innerHTML = `
             <main style="padding: 2rem;" class="category-container">
+                <!-- Ad Slot: Category Top -->
+                <div class="ad-slot ad-slot-top" id="ad-category-top"></div>
+
                 <h2>${catData.name}</h2>
                 <p>${catData.description}</p>
+                
+                <!-- Ad Slot: Category Bottom -->
+                <div class="ad-slot ad-slot-bottom" id="ad-category-bottom"></div>
             </main>
         `;
     }
@@ -200,11 +232,21 @@ function renderToolPage(tool) {
     if (appContainer) {
         appContainer.innerHTML = `
             <main style="padding: 2rem;" class="tool-container">
+                <!-- Ad Slot: Tool Page Top (آمن بعيداً عن أزرار الرفع) -->
+                <div class="ad-slot ad-slot-top" id="ad-tool-top"></div>
+
                 <h1>${toolData.name}</h1>
                 <p>${toolData.description}</p>
+                
                 <div id="tool-functional-area">
-                    <!-- مساحة عمل الأداة الأساسية دون المساس بوظائفها -->
+                    <!-- مساحة عمل الأداة الأساسية دون المساس بوظائفها وبدون تغطية زر الرفع -->
                 </div>
+
+                <!-- Ad Slot: Tool Page Middle (بين أجزاء الأداة بشكل آمن ومنظم) -->
+                <div class="ad-slot ad-slot-middle" id="ad-tool-middle"></div>
+                
+                <!-- Ad Slot: Tool Page Bottom -->
+                <div class="ad-slot ad-slot-bottom" id="ad-tool-bottom"></div>
             </main>
         `;
     }
