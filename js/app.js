@@ -7,6 +7,7 @@ document.addEventListener("DOMContentLoaded", () => {
     document.addEventListener("keydown", (e) => {
         if (e.key === "Escape") {
             closeMobileMenu();
+            closeSearchModal();
         }
     });
 });
@@ -50,6 +51,7 @@ function handleRoute() {
 
     renderNavbar(path);
     closeMobileMenu();
+    closeSearchModal();
 
     if (path.startsWith("/tools/")) {
         const toolSlug = path.split("/")[2];
@@ -113,6 +115,92 @@ function triggerShare() {
     }
 }
 
+// إدارة نظام البحث الشامل (Global Search Overlay/Modal)
+function openSearchModal() {
+    let modal = document.getElementById("search-modal-container");
+    if (!modal) {
+        modal = document.createElement("div");
+        modal.id = "search-modal-container";
+        modal.style.cssText = "position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.6); z-index: 2000; display: flex; justify-content: center; align-items: flex-start; padding-top: 5vh;";
+        modal.innerHTML = `
+            <div style="background: var(--nav-bg); width: 90%; max-width: 600px; border-radius: 8px; border: 1px solid var(--border-color); box-shadow: 0 10px 25px rgba(0,0,0,0.2); overflow: hidden; display: flex; flex-direction: column;">
+                <div style="padding: 1rem; border-bottom: 1px solid var(--border-color); display: flex; align-items: center; gap: 0.75rem;">
+                    <svg viewBox="0 0 24 24" style="width: 20px; height: 20px; fill: var(--text-color); opacity: 0.6;"><path d="M15.5 14h-.79l-.28-.27A6.471 6.471 0 0 0 16 9.5 6.5 6.5 0 1 0 9.5 16c1.61 0 3.09-.59 4.23-1.57l.27.28v.79l5 4.99L20.49 19l-4.99-5zm-6 0C7.01 14 5 11.99 5 9.5S7.01 5 9.5 5 14 7.01 14 9.5 11.99 14 9.5 14z"/></svg>
+                    <input type="text" id="global-search-input" placeholder="Search tools, categories, or keywords..." style="border: none; background: transparent; width: 100%; font-size: 1rem; color: var(--text-color); outline: none;" oninput="handleSearchInput(this.value)" onkeydown="handleSearchKeydown(event)">
+                    <button onclick="closeSearchModal()" style="background: none; border: none; font-size: 1.25rem; cursor: pointer; color: var(--text-color);">&times;</button>
+                </div>
+                <div id="search-results-container" style="max-height: 60vh; overflow-y: auto; padding: 0.5rem;">
+                    <!-- نتائج البحث تظهر هنا -->
+                </div>
+            </div>
+        `;
+        document.body.appendChild(modal);
+        modal.addEventListener("click", (e) => {
+            if (e.target === modal) closeSearchModal();
+        });
+    }
+    modal.style.display = "flex";
+    setTimeout(() => {
+        const input = document.getElementById("global-search-input");
+        if (input) input.focus();
+    }, 50);
+}
+
+function closeSearchModal() {
+    const modal = document.getElementById("search-modal-container");
+    if (modal) {
+        modal.style.display = "none";
+    }
+}
+
+function handleSearchInput(query) {
+    const container = document.getElementById("search-results-container");
+    if (!container) return;
+    
+    const q = query.trim().toLowerCase();
+    if (!q) {
+        container.innerHTML = `<div style="padding: 1.5rem; text-align: center; color: var(--text-color); opacity: 0.6;">Type to start searching tools...</div>`;
+        return;
+    }
+
+    // البحث الشامل في: اسم الأداة، الوصف، الفئة، والكلمات المفتاحية/الـ Aliases
+    const matchedTools = ousoData.tools.filter(tool => {
+        const toolData = (translations && translations[currentLang]?.tools?.[tool.key]) || translations?.["en"]?.tools?.[tool.key] || {};
+        const name = (toolData.name || "").toLowerCase();
+        const desc = (toolData.description || "").toLowerCase();
+        const categoryObj = ousoData.categories.find(c => c.id === tool.categoryId);
+        const catData = (translations && translations[currentLang]?.categories?.[categoryObj?.key]) || {};
+        const catName = (catData.name || "").toLowerCase();
+        const keywords = (tool.keywords || []).map(k => k.toLowerCase());
+
+        return name.includes(q) || desc.includes(q) || catName.includes(q) || keywords.some(k => k.includes(q));
+    });
+
+    if (matchedTools.length === 0) {
+        container.innerHTML = `<div style="padding: 2rem; text-align: center; color: var(--text-color);">No results found for "<strong>${query}</strong>"</div>`;
+        return;
+    }
+
+    container.innerHTML = matchedTools.map((tool, index) => {
+        const toolData = (translations && translations[currentLang]?.tools?.[tool.key]) || translations?.["en"]?.tools?.[tool.key] || { name: tool.id, description: "" };
+        return `
+            <div class="search-result-item ${index === 0 ? 'selected' : ''}" tabindex="0" onclick="navigateTo('/${tool.slug}', event); closeSearchModal();" style="padding: 0.75rem 1rem; border-radius: 6px; cursor: pointer; transition: background 0.2s; border-bottom: 1px solid var(--border-color);" onmouseover="this.style.background='var(--border-color)'" onmouseout="this.style.background='transparent'">
+                <div style="font-weight: 600; color: var(--text-color);">${toolData.name}</div>
+                <div style="font-size: 0.85rem; color: var(--text-color); opacity: 0.7; margin-top: 0.2rem;">${toolData.description}</div>
+            </div>
+        `;
+    }).join("");
+}
+
+function handleSearchKeydown(event) {
+    if (event.key === "Enter") {
+        const results = document.querySelectorAll(".search-result-item");
+        if (results.length > 0) {
+            results[0].click();
+        }
+    }
+}
+
 function renderNavbar(currentPath) {
     let headerContainer = document.getElementById("main-header");
     if (!headerContainer) {
@@ -122,7 +210,6 @@ function renderNavbar(currentPath) {
         document.body.prepend(headerContainer);
     }
     
-    // SVG Icons القياسية بدون استخدام أي Emojis
     const icons = {
         home: `<svg viewBox="0 0 24 24"><path d="M10 20v-6h4v6h5v-8h3L12 3 2 12h3v8z"/></svg>`,
         categories: `<svg viewBox="0 0 24 24"><path d="M4 8h4V4H4v4zm6 12h4v-4h-4v4zm-6 0h4v-4H4v4zm0-6h4v-4H4v4zm6 0h4v-4h-4v4zm6-10v4h4V4h-4zm-6 4h4V4h-4v4zm6 6h4v-4h-4v4zm0 6h4v-4h-4v4z"/></svg>`,
@@ -150,6 +237,9 @@ function renderNavbar(currentPath) {
                 <a href="/category/productivity" class="nav-link ${currentPath.startsWith('/category') ? 'active' : ''}" onclick="navigateTo('/category/productivity', event)">
                     ${icons.categories} <span id="nav-categories"></span>
                 </a>
+                <a href="#" class="nav-link" onclick="event.preventDefault(); openSearchModal();">
+                    ${icons.search} <span id="nav-search"></span>
+                </a>
                 <a href="/faq" class="nav-link ${currentPath === '/faq' ? 'active' : ''}" onclick="navigateTo('/faq', event)">
                     ${icons.faq} <span id="nav-faq"></span>
                 </a>
@@ -163,9 +253,9 @@ function renderNavbar(currentPath) {
         </nav>
     `;
     
-    // ربط النصوص بنظام الترجمة
     document.getElementById("nav-home").textContent = t("nav", "home");
     document.getElementById("nav-categories").textContent = t("nav", "categories") || "Categories";
+    document.getElementById("nav-search").textContent = t("nav", "search") || "Search";
     document.getElementById("nav-faq").textContent = t("nav", "faq") || "FAQ";
     document.getElementById("nav-share").textContent = t("nav", "share") || "Share";
     document.getElementById("nav-settings").textContent = t("nav", "settings");
@@ -180,14 +270,6 @@ function updateSEO(data) {
     if (data.canonical) {
         let canonicalLink = document.querySelector("link[rel='canonical']");
         if (canonicalLink) canonicalLink.setAttribute("href", data.canonical);
-    }
-    if (data.ogTitle) {
-        let ogTitle = document.querySelector("meta[property='og:title']");
-        if (ogTitle) ogTitle.setAttribute("content", data.ogTitle);
-    }
-    if (data.ogDesc) {
-        let ogDesc = document.querySelector("meta[property='og:description']");
-        if (ogDesc) ogDesc.setAttribute("content", data.ogDesc);
     }
 }
 
