@@ -1,209 +1,211 @@
-<svg xmlns="http://www.w3.org/2000/svg" style="display:none">
-
-  <symbol id="icon-cat" viewBox="0 0 100 100">
-    <polygon points="17,40 30,5 43,40"/>
-    <polygon points="57,40 70,5 83,40"/>
-    <rect x="13" y="30" width="74" height="58" rx="27"/>
+<svg xmlns="http://www.w3.org/2000/svg" style="display: none;">
+  <!-- Category & Common Icons -->
+  <symbol id="icon-image" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+    <rect x="3" y="3" width="18" height="18" rx="2" ry="2"/>
+    <circle cx="8.5" cy="8.5" r="1.5"/>
+    <polyline points="21 15 16 10 5 21"/>
   </symbol>
 
-  <!-- category icons -->
-  <symbol id="icon-image" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round">
-    <rect x="3" y="4" width="18" height="16" rx="2"/>
-    <circle cx="8.5" cy="9.5" r="1.6"/>
-    <path d="M21 16l-5.5-5.5a2 2 0 0 0-2.8 0L4 19"/>
+  <symbol id="icon-video" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+    <polygon points="23 7 16 12 23 17 23 7"/>
+    <rect x="1" y="5" width="15" height="14" rx="2" ry="2"/>
   </symbol>
 
-  <symbol id="icon-video" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round">
-    <rect x="3" y="6" width="13" height="12" rx="2"/>
-    <path d="M16 10l5-3v10l-5-3"/>
+  <symbol id="icon-sparkle" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+    <path d="m12 3-1.912 5.813a2 2 0 0 1-1.275 1.275L3 12l5.813 1.912a2 2 0 0 1 1.275 1.275L12 21l1.912-5.813a2 2 0 0 1 1.275-1.275L21 12l-5.813-1.912a2 2 0 0 1-1.275-1.275L12 3Z"/>
+    <path d="M5 3v4"/>
+    <path d="M3 5h4"/>
+    <path d="M19 17v4"/>
+    <path d="M17 19h4"/>
   </symbol>
 
-  <symbol id="icon-sparkle" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round">
-    <path d="M12 3l1.8 4.8L18.5 9.5l-4.7 1.8L12 16l-1.8-4.7-4.7-1.8 4.7-1.7L12 3z"/>
-    <path d="M19 15l.8 2 2 .8-2 .8-.8 2-.8-2-2-.8 2-.8.8-2z"/>
+  <symbol id="icon-pdf" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+    <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/>
+    <polyline points="14 2 14 8 20 8"/>
+    <line x1="9" y1="13" x2="15" y2="13"/>
+    <line x1="9" y1="17" x2="13" y2="17"/>
+    <line x1="9" y1="9" x2="10" y2="9"/>
   </symbol>
 
-  <symbol id="icon-pdf" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round">
-    <path d="M7 3h7l4 4v14a1 1 0 0 1-1 1H7a1 1 0 0 1-1-1V4a1 1 0 0 1 1-1z"/>
-    <path d="M14 3v4h4"/>
-    <path d="M9 14h1.5a1.3 1.3 0 0 0 0-2.6H9V17"/>
-    <path d="M13.5 17v-5.6H15a1.8 1.8 0 0 1 0 3.6h-1.5V17"/>
+  <symbol id="icon-grid" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+    <rect x="3" y="3" width="7" height="7"/>
+    <rect x="14" y="3" width="7" height="7"/>
+    <rect x="14" y="14" width="7" height="7"/>
+    <rect x="3" y="14" width="7" height="7"/>
   </symbol>
 
-  <symbol id="icon-grid" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round">
-    <rect x="3" y="3" width="7" height="7" rx="1.5"/>
-    <rect x="14" y="3" width="7" height="7" rx="1.5"/>
-    <rect x="3" y="14" width="7" height="7" rx="1.5"/>
-    <rect x="14" y="14" width="7" height="7" rx="1.5"/>
+  <!-- Image Tools -->
+  <symbol id="icon-scissors" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+    <circle cx="6" cy="6" r="3"/>
+    <circle cx="6" cy="18" r="3"/>
+    <line x1="20" y1="4" x2="8.12" y2="15.88"/>
+    <line x1="14.47" y1="14.48" x2="20" y2="20"/>
+    <line x1="8.12" y1="8.12" x2="12" y2="12"/>
   </symbol>
 
-  <!-- image tools -->
-  <symbol id="icon-scissors" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round">
-    <circle cx="6" cy="6" r="2.2"/>
-    <circle cx="6" cy="18" r="2.2"/>
-    <path d="M8 7.5L20 19M8 16.5L20 5"/>
+  <symbol id="icon-compress" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+    <polyline points="4 14 10 14 10 20"/>
+    <polyline points="20 10 14 10 14 4"/>
+    <line x1="14" y1="10" x2="21" y2="3"/>
+    <line x1="3" y1="21" x2="10" y2="14"/>
   </symbol>
 
-  <symbol id="icon-compress" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round">
-    <path d="M9 4v4a1 1 0 0 1-1 1H4"/>
-    <path d="M15 20v-4a1 1 0 0 1 1-1h4"/>
-    <path d="M4 4l5 5M20 20l-5-5"/>
+  <symbol id="icon-resize" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+    <path d="M15 3h6v6"/>
+    <path d="M10 14 21 3"/>
+    <path d="M9 21H3v-6"/>
+    <path d="M14 10 3 21"/>
   </symbol>
 
-  <symbol id="icon-resize" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round">
-    <rect x="3" y="3" width="10" height="10" rx="1.5"/>
-    <path d="M17 17h4v4"/>
-    <path d="M21 13v8h-8"/>
+  <symbol id="icon-crop" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+    <path d="M6.13 1H6v5H1v2h5v9a2 2 0 0 0 2 2h9v5h2v-5h5v-2H8.13a1 1 0 0 1-1-1V8h5V6H8.13V1Z"/>
   </symbol>
 
-  <symbol id="icon-crop" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round">
-    <path d="M6 2v14a2 2 0 0 0 2 2h14"/>
-    <path d="M18 22V8a2 2 0 0 0-2-2H2"/>
+  <symbol id="icon-convert" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+    <polyline points="17 1 21 5 17 9"/>
+    <path d="M3 11V9a4 4 0 0 1 4-4h14"/>
+    <polyline points="7 23 3 19 7 15"/>
+    <path d="M21 13v2a4 4 0 0 1-4 4H3"/>
   </symbol>
 
-  <symbol id="icon-convert" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round">
-    <path d="M17 2l4 4-4 4"/>
-    <path d="M21 6H9a5 5 0 0 0-5 5"/>
-    <path d="M7 22l-4-4 4-4"/>
-    <path d="M3 18h12a5 5 0 0 0 5-5"/>
+  <symbol id="icon-rotate" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+    <path d="M21.5 2v6h-6M21.34 15.57a10 10 0 1 1-.57-8.38l5.73-5.19"/>
   </symbol>
 
-  <symbol id="icon-upscale" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round">
-    <path d="M4 14v6h6"/>
-    <path d="M20 10V4h-6"/>
-    <path d="M4 20l7-7"/>
-    <path d="M20 4l-7 7"/>
+  <symbol id="icon-upscale" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+    <path d="m5 9 7-7 7 7"/>
+    <path d="M12 2v20"/>
+    <path d="M3 17h18"/>
+    <path d="M3 21h18"/>
   </symbol>
 
-  <!-- video tools -->
-  <symbol id="icon-download" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round">
-    <path d="M12 3v12"/>
-    <path d="M7 10l5 5 5-5"/>
-    <path d="M4 19h16"/>
+  <!-- Video Tools -->
+  <symbol id="icon-download" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+    <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/>
+    <polyline points="7 10 12 15 17 10"/>
+    <line x1="12" y1="15" x2="12" y2="3"/>
   </symbol>
 
-  <symbol id="icon-trim" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round">
-    <path d="M4 12h4M16 12h4"/>
-    <rect x="8" y="8" width="8" height="8" rx="1.5"/>
+  <symbol id="icon-trim" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+    <path d="M4 6h16"/>
+    <path d="M4 12h16"/>
+    <path d="M4 18h16"/>
+    <circle cx="9" cy="6" r="2"/>
+    <circle cx="15" cy="12" r="2"/>
+    <circle cx="12" cy="18" r="2"/>
   </symbol>
 
-  <symbol id="icon-gif" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round">
-    <rect x="3" y="5" width="18" height="14" rx="2"/>
-    <path d="M8 9v6M13 9h2.5a1.5 1.5 0 0 1 0 3H13v3M20 9h-2.5v6"/>
+  <symbol id="icon-gif" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+    <rect x="2" y="4" width="20" height="16" rx="2"/>
+    <path d="M10 12h4"/>
+    <path d="M12 10v4"/>
+    <path d="M6 10h2v4H6z"/>
+    <path d="M18 10h-2v4h2"/>
   </symbol>
 
-  <!-- AI content tools -->
-  <symbol id="icon-quill" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round">
-    <path d="M20 4c-6 0-13 3-15 11-1 3 1 5 4 4 8-2 11-9 11-15z"/>
-    <path d="M9 15L4 20"/>
+  <!-- AI Content Tools -->
+  <symbol id="icon-quill" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+    <path d="M12 19l7-7 3 3-7 7-3-3z"/>
+    <path d="M18 13l-1.5-7.5L2 2l3.5 14.5L13 18l5-5z"/>
+    <path d="M2 2l7.586 7.586"/>
+    <circle cx="11" cy="11" r="2"/>
   </symbol>
 
-  <symbol id="icon-title" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round">
-    <path d="M5 6h14M5 12h14M5 18h9"/>
+  <symbol id="icon-title" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+    <path d="M4 7V4h16v3"/>
+    <path d="M12 4v16"/>
+    <path d="M8 20h8"/>
   </symbol>
 
-  <symbol id="icon-caption" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round">
-    <rect x="3" y="5" width="18" height="12" rx="2"/>
-    <path d="M7 9h4M7 13h7"/>
-    <path d="M9 21l3-4"/>
+  <symbol id="icon-caption" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+    <path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/>
+    <line x1="8" y1="9" x2="16" y2="9"/>
+    <line x1="8" y1="13" x2="13" y2="13"/>
   </symbol>
 
-  <symbol id="icon-outline" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round">
-    <circle cx="6" cy="6" r="1.6"/>
-    <circle cx="6" cy="12" r="1.6"/>
-    <circle cx="6" cy="18" r="1.6"/>
-    <path d="M10 6h11M10 12h11M10 18h11"/>
+  <symbol id="icon-outline" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+    <line x1="8" y1="6" x2="21" y2="6"/>
+    <line x1="8" y1="12" x2="21" y2="12"/>
+    <line x1="8" y1="18" x2="21" y2="18"/>
+    <line x1="3" y1="6" x2="3.01" y2="6"/>
+    <line x1="3" y1="12" x2="3.01" y2="12"/>
+    <line x1="3" y1="18" x2="3.01" y2="18"/>
   </symbol>
 
-  <!-- pdf tools -->
-  <symbol id="icon-merge" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round">
-    <path d="M6 3v9a3 3 0 0 0 3 3h9"/>
-    <path d="M15 12l3 3-3 3"/>
-    <rect x="3" y="3" width="6" height="6" rx="1.2"/>
+  <!-- PDF Tools -->
+  <symbol id="icon-merge" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+    <path d="m8 6 4-4 4 4"/>
+    <path d="M12 2v10.3a4 4 0 0 1-1.17 2.83L4 22"/>
+    <path d="M20 22l-6.83-6.87A4 4 0 0 1 12 12.3V2"/>
   </symbol>
 
-  <symbol id="icon-split" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round">
-    <path d="M18 21v-9a3 3 0 0 0-3-3H6"/>
-    <path d="M9 12L6 9l3-3"/>
-    <rect x="15" y="15" width="6" height="6" rx="1.2"/>
+  <symbol id="icon-split" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+    <path d="m16 3 4 4-4 4"/>
+    <path d="M20 7H4a2 2 0 0 0-2 2v10a2 2 0 0 0 2 2h16a2 2 0 0 0 2-2v-3"/>
   </symbol>
 
-  <symbol id="icon-word" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round">
-    <path d="M7 3h7l4 4v14a1 1 0 0 1-1 1H7a1 1 0 0 1-1-1V4a1 1 0 0 1 1-1z"/>
-    <path d="M14 3v4h4"/>
-    <path d="M7.5 12l1.5 5 1.5-3.5L12 17l1.5-5"/>
+  <symbol id="icon-word" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+    <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/>
+    <polyline points="14 2 14 8 20 8"/>
+    <path d="M8 13h2l1 4 1-4h2"/>
   </symbol>
 
-  <!-- general tools -->
-  <symbol id="icon-qr" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round">
-    <rect x="3" y="3" width="7" height="7" rx="1"/>
-    <rect x="14" y="3" width="7" height="7" rx="1"/>
-    <rect x="3" y="14" width="7" height="7" rx="1"/>
-    <path d="M14 14h3v3h-3zM14 20h3M20 14v3M20 20h.01"/>
+  <!-- General & Developer Tools -->
+  <symbol id="icon-qr" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+    <rect x="3" y="3" width="7" height="7"/>
+    <rect x="14" y="3" width="7" height="7"/>
+    <rect x="14" y="14" width="7" height="7"/>
+    <rect x="3" y="14" width="7" height="7"/>
+    <line x1="7" y1="7" x2="7.01" y2="7"/>
+    <line x1="18" y1="7" x2="18.01" y2="7"/>
+    <line x1="18" y1="18" x2="18.01" y2="18"/>
+    <line x1="7" y1="18" x2="7.01" y2="18"/>
   </symbol>
 
-  <symbol id="icon-text" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round">
-    <path d="M5 5h14M12 5v14M9 19h6"/>
+  <symbol id="icon-text" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+    <polyline points="4 7 4 4 20 4 20 7"/>
+    <line x1="9" y1="20" x2="15" y2="20"/>
+    <line x1="12" y1="4" x2="12" y2="20"/>
   </symbol>
 
-  <symbol id="icon-calculator" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round">
-    <rect x="5" y="3" width="14" height="18" rx="2"/>
-    <path d="M8 7h8M8 12h.01M12 12h.01M16 12h.01M8 16h.01M12 16h.01M16 16h4"/>
+  <symbol id="icon-calculator" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+    <rect x="4" y="2" width="16" height="20" rx="2"/>
+    <line x1="8" y1="6" x2="16" y2="6"/>
+    <line x1="8" y1="10" x2="10" y2="10"/>
+    <line x1="14" y1="10" x2="16" y2="10"/>
+    <line x1="8" y1="14" x2="10" y2="14"/>
+    <line x1="14" y1="14" x2="16" y2="14"/>
+    <line x1="8" y1="18" x2="10" y2="18"/>
+    <line x1="14" y1="18" x2="16" y2="18"/>
   </symbol>
 
-  <symbol id="icon-ruler" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round">
-    <rect x="3" y="8" width="18" height="8" rx="1.5" transform="rotate(0 12 12)"/>
-    <path d="M7 8v3M11 8v3M15 8v3M19 8v3"/>
+  <symbol id="icon-ruler" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+    <path d="M2 6h20v12H2z"/>
+    <path d="M6 6v4"/>
+    <path d="M10 6v3"/>
+    <path d="M14 6v4"/>
+    <path d="M18 6v3"/>
   </symbol>
 
-  <symbol id="icon-palette" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round">
-    <path d="M12 3a9 9 0 1 0 0 18c1.1 0 1.8-.9 1.4-1.9-.3-.7.2-1.5 1-1.5H16a4 4 0 0 0 4-4c0-6-3.6-10.6-8-10.6z"/>
-    <circle cx="8" cy="11" r="1.1" fill="currentColor" stroke="none"/>
-    <circle cx="12" cy="8" r="1.1" fill="currentColor" stroke="none"/>
-    <circle cx="16" cy="11" r="1.1" fill="currentColor" stroke="none"/>
-  </symbol>
-<symbol id="icon-rotate" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round">
-  <path d="M4 12a8 8 0 1 1 2.5 5.8"/>
-  <path d="M4 21v-5h5"/>
-</symbol>
-
-<symbol id="icon-key" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round">
-  <circle cx="8" cy="15" r="4"/>
-  <path d="M11 12l8-8M16 4l3 3M19 7l2 2"/>
-</symbol>
-
-<symbol id="icon-code" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round">
-  <path d="M9 6L3 12l6 6M15 6l6 6-6 6"/>
-</symbol>
-
-<symbol id="icon-clock" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round">
-  <circle cx="12" cy="12" r="9"/>
-  <path d="M12 7v5l3.5 2"/>
-</symbol>
-  <!-- ui icons -->
-  <symbol id="icon-lock" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round">
-    <rect x="5" y="10" width="14" height="10" rx="2"/>
-    <path d="M8 10V7a4 4 0 0 1 8 0v3"/>
+  <symbol id="icon-palette" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+    <circle cx="13.5" cy="6.5" r=".5"/>
+    <circle cx="17.5" cy="10.5" r=".5"/>
+    <circle cx="8.5" cy="7.5" r=".5"/>
+    <circle cx="6.5" cy="12.5" r=".5"/>
+    <path d="M12 2C6.5 2 2 6.5 2 12s4.5 10 10 10c.926 0 1.648-.746 1.648-1.688 0-.437-.18-.835-.437-1.125-.29-.289-.438-.652-.438-1.125a1.64 1.64 0 0 1 1.668-1.688h1.996c3.051 0 5.555-2.504 5.555-5.555C22 6.5 17.5 2 12 2z"/>
   </symbol>
 
-  <symbol id="icon-close" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round">
-    <path d="M6 6l12 12M18 6L6 18"/>
+  <symbol id="icon-key" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+    <path d="M21 2l-2 2m-7.61 7.61a5.5 5.5 0 1 1-7.778 7.778 5.5 5.5 0 0 1 7.778-7.778zm0 0L15.5 7.5m0 3l2 2m-2-2l2-2"/>
   </symbol>
 
-  <symbol id="icon-menu" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round">
-    <path d="M4 7h16M4 12h16M4 17h16"/>
+  <symbol id="icon-code" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+    <polyline points="16 18 22 12 16 6"/>
+    <polyline points="8 6 2 12 8 18"/>
   </symbol>
 
-  <symbol id="icon-arrow" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
-    <path d="M5 12h14M13 6l6 6-6 6"/>
+  <symbol id="icon-clock" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+    <circle cx="12" cy="12" r="10"/>
+    <polyline points="12 6 12 12 16 14"/>
   </symbol>
-
-  <symbol id="icon-chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
-    <path d="M9 6l6 6-6 6"/>
-  </symbol>
-
-  <symbol id="icon-star" viewBox="0 0 24 24" fill="currentColor" stroke="none">
-    <path d="M12 2.5l2.9 5.9 6.5.9-4.7 4.6 1.1 6.5L12 17.3l-5.8 3.1 1.1-6.5-4.7-4.6 6.5-.9z"/>
-  </symbol>
-
 </svg>
