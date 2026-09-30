@@ -1,12 +1,13 @@
-/* الأنماط الأساسية للموقع */
+/* إعدادات المتغيرات والهوية البصرية */
 :root {
-    --bg-color: #f1f5f9;
-    --text-color: #1e293b;
+    --bg-color: #f8fafc;
+    --text-color: #0f172a;
     --nav-bg: #ffffff;
-    --border-color: #e2e8f0;
+    --border-color: #cbd5e1;
     --primary-color: #2563eb;
     --primary-hover: #1d4ed8;
-    --active-color: #2563eb;
+    --focus-ring: 0 0 0 3px rgba(37, 99, 235, 0.5);
+    --transition-speed: 0.2s;
 }
 
 [data-theme="dark"] {
@@ -15,27 +16,55 @@
     --nav-bg: #1e293b;
     --border-color: #334155;
     --primary-color: #3b82f6;
-    --primary-hover: #60a5fa;
-    --active-color: #60a5fa;
+    --primary-hover: #2563eb;
+    --focus-ring: 0 0 0 3px rgba(59, 130, 246, 0.5);
+}
+
+/* دعم تقليل الحركة (Reduced Motion) */
+@media (prefers-reduced-motion: reduce) {
+  * {
+    animation-duration: 0.001ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.001ms !important;
+    scroll-behavior: auto !important;
+  }
+}
+
+* {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
 }
 
 body {
-    font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
-    margin: 0;
-    padding: 0;
+    font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
     background-color: var(--bg-color);
     color: var(--text-color);
+    line-height: 1.5;
+    min-height: 100vh;
     display: flex;
     flex-direction: column;
-    min-height: 100vh;
-    transition: background-color 0.3s, color 0.3s;
 }
 
-main {
-    flex: 1;
+/* Skip to Content مرئي عند التركيز */
+.skip-to-content:focus {
+    left: 1rem;
+    top: 1rem;
+    box-shadow: var(--focus-ring);
+    border-radius: 4px;
 }
 
-/* تصميم شريط التنقل الاحترافي (Navigation) */
+/* تحسين تركيز العناصر (Visible Focus States) للـ Accessibility */
+a:focus-visible,
+button:focus-visible,
+input:focus-visible,
+select:focus-visible {
+    outline: none;
+    box-shadow: var(--focus-ring);
+    border-color: var(--primary-color);
+}
+
+/* الناف بار وتجاوب الموبايل */
 .site-header {
     background-color: var(--nav-bg);
     border-bottom: 1px solid var(--border-color);
@@ -47,37 +76,39 @@ main {
 .nav-container {
     max-width: 1200px;
     margin: 0 auto;
+    padding: 0.75rem 1.5rem;
     display: flex;
     justify-content: space-between;
     align-items: center;
-    padding: 0.75rem 1.5rem;
 }
 
 .logo-container a {
-    font-weight: 800;
-    font-size: 1.25rem;
-    text-decoration: none;
+    font-size: 1.5rem;
+    font-weight: 700;
     color: var(--text-color);
-    letter-spacing: 0.5px;
+    text-decoration: none;
 }
 
 .nav-links {
     display: flex;
-    gap: 1.25rem;
+    gap: 1.5rem;
     align-items: center;
 }
 
 .nav-link {
+    color: var(--text-color);
+    text-decoration: none;
     display: flex;
     align-items: center;
     gap: 0.4rem;
-    text-decoration: none;
-    color: var(--text-color);
     font-size: 0.95rem;
-    font-weight: 500;
-    padding: 0.4rem 0.6rem;
+    padding: 0.5rem 0.75rem;
     border-radius: 6px;
-    transition: background-color 0.2s, color 0.2s;
+    transition: background var(--transition-speed);
+}
+
+.nav-link:hover, .nav-link.active {
+    background-color: var(--border-color);
 }
 
 .nav-link svg {
@@ -86,26 +117,16 @@ main {
     fill: currentColor;
 }
 
-.nav-link:hover, .nav-link:focus {
-    background-color: var(--border-color);
-    color: var(--primary-color);
-    outline: none;
-}
-
-.nav-link.active {
-    color: var(--active-color);
-    font-weight: 600;
-    background-color: var(--border-color);
-}
-
-/* زر القائمة للموبايل (Hamburger Button) */
 .mobile-menu-btn {
     display: none;
     background: none;
-    border: none;
+    border: 1px solid var(--border-color);
+    padding: 0.5rem;
+    border-radius: 6px;
     cursor: pointer;
-    padding: 0.4rem;
     color: var(--text-color);
+    min-height: 44px;
+    min-width: 44px;
 }
 
 .mobile-menu-btn svg {
@@ -114,66 +135,84 @@ main {
     fill: currentColor;
 }
 
-/* حاويات الإعلانات القياسية */
-.ad-slot {
-    width: 100%;
-    min-height: 90px;
-    background-color: var(--border-color);
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    margin: 1.5rem 0;
-    border-radius: 6px;
-    overflow: hidden;
-    position: relative;
-}
-
-.ad-slot:empty {
-    display: none;
-}
-
-.ad-slot-top { margin-top: 0.5rem; margin-bottom: 1.5rem; }
-.ad-slot-middle { margin: 2rem 0; }
-.ad-slot-bottom { margin-top: 2rem; margin-bottom: 1rem; }
-
-/* تنسيق تذليل الصفحة (Footer) */
-footer.site-footer {
-    background-color: var(--nav-bg);
-    border-top: 1px solid var(--border-color);
-    padding: 1.5rem;
-    text-align: center;
-    margin-top: auto;
-}
-
-/* استجابة الشاشات الصغيرة (Mobile Responsiveness) */
-@media (max-width: 900px) {
+/* تصميم متجاوب للموبايل وقائمة التنقل */
+@media (max-width: 768px) {
+    .mobile-menu-btn {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+    }
     .nav-links {
         display: none;
         flex-direction: column;
         position: absolute;
         top: 100%;
         left: 0;
-        right: 0;
+        width: 100%;
         background-color: var(--nav-bg);
         border-bottom: 1px solid var(--border-color);
         padding: 1rem;
         box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
     }
-    
     .nav-links.open {
         display: flex;
     }
-
-    .mobile-menu-btn {
-        display: block;
-    }
-
     .nav-link {
         width: 100%;
         padding: 0.75rem 1rem;
     }
+}
 
-    .ad-slot {
-        min-height: 50px;
-    }
+/* الفوتر والإعلانات */
+.site-footer {
+    margin-top: auto;
+    background-color: var(--nav-bg);
+    border-top: 1px solid var(--border-color);
+    padding: 1.5rem;
+    text-align: center;
+}
+
+.ad-slot {
+    background: var(--border-color);
+    opacity: 0.7;
+    margin: 1rem auto;
+    border-radius: 4px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 0.85rem;
+    color: var(--text-color);
+}
+.ad-slot-top, .ad-slot-bottom { width: 100%; max-width: 728px; height: 90px; }
+.ad-slot-middle { width: 100%; max-width: 300px; height: 250px; }
+
+/* بطاقات الأدوات (Tool Cards) و Breadcrumbs */
+.breadcrumb-list {
+    display: flex;
+    list-style: none;
+    gap: 0.5rem;
+    margin-bottom: 1rem;
+    font-size: 0.875rem;
+}
+.breadcrumb-item + .breadcrumb-item::before {
+    content: "/";
+    margin-right: 0.5rem;
+    opacity: 0.6;
+}
+
+.tool-card {
+    background: var(--nav-bg);
+    border: 1px solid var(--border-color);
+    border-radius: 8px;
+    padding: 1.25rem;
+    text-decoration: none;
+    color: var(--text-color);
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+    transition: transform var(--transition-speed), border-color var(--transition-speed);
+}
+.tool-card:hover {
+    border-color: var(--primary-color);
+    transform: translateY(-2px);
 }
