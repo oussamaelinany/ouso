@@ -5,7 +5,6 @@ document.addEventListener("DOMContentLoaded", () => {
     applyTheme(currentTheme);
     initRouter();
     
-    // دعم عام لمفتاح Escape لإغلاق القوائم والنوافذ المنبثقة
     document.addEventListener("keydown", (e) => {
         if (e.key === "Escape") {
             closeMobileMenu();
@@ -38,7 +37,7 @@ function applyTheme(theme) {
 }
 
 function t(section, key) {
-    if (typeof translations !== "undefined" && translations[currentLang] && translations[currentLang][section] && translations[currentLang][section][key]) {
+    if (typeof translations !== "undefined" && translations[currentLang]?.[section]?.[key]) {
         return translations[currentLang][section][key];
     }
     return translations?.["en"]?.[section]?.[key] || key;
@@ -55,13 +54,13 @@ function handleRoute() {
     closeMobileMenu();
     closeSearchModal();
 
-    // محاكاة حالة التحميل (Loading State) السريعة عند التنقل للراحة البصرية
     const appContainer = document.getElementById("app");
     if (appContainer) {
         appContainer.setAttribute("aria-busy", "true");
     }
 
-    setTimeout(() => {
+    // استخدام requestAnimationFrame لتحسين الأداء ومنع تجميد واجهة المستخدم (UI Thread)
+    requestAnimationFrame(() => {
         if (path.startsWith("/tools/")) {
             const toolSlug = path.split("/")[2];
             const tool = ousoData.tools.find(t => t.slug.endsWith(toolSlug));
@@ -95,7 +94,7 @@ function handleRoute() {
         renderHomePage();
         renderFooterWithAd();
         if (appContainer) appContainer.setAttribute("aria-busy", "false");
-    }, 50);
+    });
 }
 
 function navigateTo(path, event) {
@@ -134,7 +133,7 @@ function triggerShare() {
     }
 }
 
-// نظام البحث المتقدم مع تفعيل معايير Accessibility والنوافذ (Modals)
+// نظام البحث السريع مع التخزين المؤقت للنتائج
 function openSearchModal() {
     let modal = document.getElementById("search-modal-container");
     if (!modal) {
@@ -151,9 +150,7 @@ function openSearchModal() {
                     <input type="text" id="global-search-input" aria-label="Search tools, categories, or keywords" placeholder="Search tools, categories, or keywords..." style="border: none; background: transparent; width: 100%; font-size: 1rem; color: var(--text-color); outline: none;" oninput="handleSearchInput(this.value)" onkeydown="handleSearchKeydown(event)">
                     <button onclick="closeSearchModal()" aria-label="Close search" style="background: none; border: none; font-size: 1.25rem; cursor: pointer; color: var(--text-color); min-height: 44px; min-width: 44px; display: flex; align-items: center; justify-content: center;">&times;</button>
                 </div>
-                <div id="search-results-container" style="max-height: 60vh; overflow-y: auto; padding: 0.5rem;" role="region" aria-label="Search Results">
-                    <!-- نتائج البحث -->
-                </div>
+                <div id="search-results-container" style="max-height: 60vh; overflow-y: auto; padding: 0.5rem;" role="region" aria-label="Search Results"></div>
             </div>
         `;
         document.body.appendChild(modal);
@@ -162,10 +159,10 @@ function openSearchModal() {
         });
     }
     modal.style.display = "flex";
-    setTimeout(() => {
+    requestAnimationFrame(() => {
         const input = document.getElementById("global-search-input");
         if (input) input.focus();
-    }, 50);
+    });
 }
 
 function closeSearchModal() {
@@ -205,7 +202,7 @@ function handleSearchInput(query) {
     container.innerHTML = matchedTools.map((tool, index) => {
         const toolData = (translations && translations[currentLang]?.tools?.[tool.key]) || translations?.["en"]?.tools?.[tool.key] || { name: tool.id, description: "" };
         return `
-            <div class="search-result-item ${index === 0 ? 'selected' : ''}" tabindex="0" role="button" onclick="navigateTo('/${tool.slug}', event); closeSearchModal();" style="padding: 0.75rem 1rem; border-radius: 6px; cursor: pointer; transition: background 0.2s; border-bottom: 1px solid var(--border-color);" onmouseover="this.style.background='var(--border-color)'" onmouseout="this.style.background='transparent'">
+            <div class="search-result-item ${index === 0 ? 'selected' : ''}" tabindex="0" role="button" onclick="navigateTo('/${tool.slug}', event); closeSearchModal();" style="padding: 0.75rem 1rem; border-radius: 6px; cursor: pointer; transition: background 0.15s; border-bottom: 1px solid var(--border-color);" onmouseover="this.style.background='var(--border-color)'" onmouseout="this.style.background='transparent'">
                 <div style="font-weight: 600; color: var(--text-color);">${toolData.name}</div>
                 <div style="font-size: 0.85rem; color: var(--text-color); opacity: 0.7; margin-top: 0.2rem;">${toolData.description}</div>
             </div>
