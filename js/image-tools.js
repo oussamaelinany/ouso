@@ -42,6 +42,8 @@ function wireUploadZone(root, id, onLoaded) {
   const zone  = root.querySelector(`#${id}-zone`);
   const input = root.querySelector(`#${id}-input`);
 
+  if (!zone || !input) return;
+
   zone.addEventListener("click", () => input.click());
   zone.addEventListener("keydown", (e) => {
     if (e.key === "Enter" || e.key === " ") { e.preventDefault(); input.click(); }
@@ -61,12 +63,13 @@ function wireUploadZone(root, id, onLoaded) {
     if (file && file.type.startsWith("image/")) readFile(file);
   });
 
-  document.addEventListener("paste", (e) => {
-    const workspace = root.closest("#tool-workspace");
-    if (!workspace || workspace.hidden) return;
+  const pasteHandler = (e) => {
+    const workspace = root.closest(".tool-page") || root.closest("#tool-workspace");
+    if (!workspace) return;
     const item = [...(e.clipboardData?.items || [])].find(i => i.type.startsWith("image/"));
     if (item) readFile(item.getAsFile());
-  });
+  };
+  document.addEventListener("paste", pasteHandler);
 
   function readFile(file) {
     const reader = new FileReader();
@@ -287,7 +290,7 @@ function renderImageConverter(root) {
       canvas.width = currentImage.naturalWidth;
       canvas.height = currentImage.naturalHeight;
       const ctx = canvas.getContext("2d");
-      if (formatSel.value === "image/jpeg") { // JPG has no transparency: fill white first
+      if (formatSel.value === "image/jpeg") {
         ctx.fillStyle = "#ffffff";
         ctx.fillRect(0, 0, canvas.width, canvas.height);
       }
@@ -361,7 +364,7 @@ function renderImageRotator(root) {
 }
 
 /* ---------------------------------------------------------
-   IMAGE CROPPER (drag a box over the image, then crop)
+   IMAGE CROPPER
 --------------------------------------------------------- */
 function renderImageCropper(root) {
   root.innerHTML = `
@@ -460,4 +463,4 @@ function renderImageCropper(root) {
     };
     if (naturalImg.complete) run(); else naturalImg.onload = run;
   });
-                        }
+}
