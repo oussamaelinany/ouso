@@ -1,41 +1,56 @@
-// بيانات الأدوات والفئات مع خصائص SEO مستقلة لكل عنصر لمنع التكرار وضمان الفهرسة المستقلة
-const ousoData = {
-    categories: [
-        {
-            id: "productivity",
-            name: "أدوات الإنتاجية",
-            slug: "category/productivity",
-            title: "أدوات الإنتاجية الرقمية - OUSO",
-            description: "تصفح أفضل أدوات الإنتاجية الرقمية المصممة لتنظيم أعمالك، توفير وقتك، وزيادة كفاءتك اليومية عبر منصة OUSO."
-        },
-        {
-            id: "development",
-            name: "أدوات المطورين",
-            slug: "category/development",
-            title: "أدوات المطورين وبرمجيات الويب - OUSO",
-            description: "مجموعة متكاملة من أدوات المطورين لتسهيل كتابة وفحص وتنسيق الأكواد البرمجية بكفاءة عالية."
-        }
-    ],
-    tools: [
-        {
-            id: "tool-1",
-            categoryId: "productivity",
-            slug: "tools/text-formatter",
-            name: "منسق النصوص الذكي",
-            seoTitle: "منسق النصوص الذكي وتنقيح المقالات - OUSO",
-            description: "أداة سريعة لتنسيق النصوص، إزالة المسافات الزائدة، وتحسين صياغة المقالات والتدوين للشركات وصناع المحتوى.",
-            ogTitle: "منسق النصوص الذكي وتنقيح المقالات",
-            ogDescription: "حسن نصوصك ومقالاتك بضغطة زر واحدة عبر أداة تنسيق النصوص الذكية من OUSO."
-        },
-        {
-            id: "tool-2",
-            categoryId: "development",
-            slug: "tools/json-validator",
-            name: "فاحص ومصحح ملفات JSON",
-            seoTitle: "فاحص وتصحيح ملفات JSON أونلاين - OUSO",
-            description: "تأكد من صحة وهيكلة بيانات JSON البرمجية واكتشاف الأخطاء الإملائية والتركيبية لحظياً.",
-            ogTitle: "فاحص وتصحيح ملفات JSON أونلاين",
-            ogDescription: "أداة مطورين لا غنى عنها لفحص وتنسيق ملفات JSON بدقة وسرعة عالية."
-        }
-    ]
-};
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    
+    <!-- Primary SEO -->
+    <title>OUSO Platform - Advanced Digital Tools & Smart Web Services</title>
+    <meta name="description" content="Discover a comprehensive suite of digital tools, smart web services, and productivity solutions designed to streamline your daily tasks efficiently.">
+    <link rel="canonical" href="https://ouso.com/">
+    <meta name="robots" content="index, follow">
+    <meta name="theme-color" content="#2563eb">
+
+    <!-- Open Graph / Facebook -->
+    <meta property="og:type" content="website">
+    <meta property="og:url" content="https://ouso.com/">
+    <meta property="og:title" content="OUSO Platform - Advanced Digital Tools & Smart Web Services">
+    <meta property="og:description" content="Discover a comprehensive suite of digital tools and smart web services via OUSO Platform.">
+    <meta property="og:image" content="https://ouso.com/assets/og-image.jpg">
+
+    <!-- Twitter / X -->
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:url" content="https://ouso.com/">
+    <meta name="twitter:title" content="OUSO Platform - Advanced Digital Tools & Smart Web Services">
+    <meta name="twitter:description" content="Discover a comprehensive suite of digital tools and smart web services via OUSO Platform.">
+    <meta name="twitter:image" content="https://ouso.com/assets/og-image.jpg">
+
+    <!-- Structured Data (Organization & WebSite) -->
+    <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@type": "WebSite",
+      "name": "OUSO",
+      "url": "https://ouso.com/",
+      "potentialAction": {
+        "@type": "SearchAction",
+        "target": "https://ouso.com/search?q={search_term_string}",
+        "query-input": "required name=search_term_string"
+      }
+    }
+    </script>
+
+    <!-- Stylesheets -->
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <div id="app">
+        <!-- المحتوى الأساسي يتم حقنه ديناميكياً -->
+    </div>
+
+    <!-- Scripts -->
+    <script src="i18n.js"></script>
+    <script src="tools.js"></script>
+    <script src="app.js"></script>
+</body>
+</html>
