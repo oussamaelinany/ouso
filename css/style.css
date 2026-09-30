@@ -20,7 +20,7 @@
     --focus-ring: 0 0 0 3px rgba(59, 130, 246, 0.5);
 }
 
-/* دعم تقليل الحركة (Reduced Motion) */
+/* دعم تقليل الحركة (Reduced Motion) للأداء والراحة البصرية */
 @media (prefers-reduced-motion: reduce) {
   * {
     animation-duration: 0.001ms !important;
@@ -44,6 +44,7 @@ body {
     min-height: 100vh;
     display: flex;
     flex-direction: column;
+    text-rendering: optimizeLegibility;
 }
 
 /* Skip to Content مرئي عند التركيز */
@@ -54,7 +55,7 @@ body {
     border-radius: 4px;
 }
 
-/* تحسين تركيز العناصر (Visible Focus States) للـ Accessibility */
+/* تحسين تركيز العناصر */
 a:focus-visible,
 button:focus-visible,
 input:focus-visible,
@@ -71,6 +72,7 @@ select:focus-visible {
     position: sticky;
     top: 0;
     z-index: 1000;
+    will-change: transform;
 }
 
 .nav-container {
@@ -135,7 +137,6 @@ select:focus-visible {
     fill: currentColor;
 }
 
-/* تصميم متجاوب للموبايل وقائمة التنقل */
 @media (max-width: 768px) {
     .mobile-menu-btn {
         display: flex;
@@ -186,7 +187,7 @@ select:focus-visible {
 .ad-slot-top, .ad-slot-bottom { width: 100%; max-width: 728px; height: 90px; }
 .ad-slot-middle { width: 100%; max-width: 300px; height: 250px; }
 
-/* بطاقات الأدوات (Tool Cards) و Breadcrumbs */
+/* البطاقات و Breadcrumbs */
 .breadcrumb-list {
     display: flex;
     list-style: none;
@@ -210,7 +211,7 @@ select:focus-visible {
     display: flex;
     flex-direction: column;
     gap: 0.5rem;
-    transition: transform var(--transition-speed), border-color var(--transition-speed);
+    transition: transform 0.15s ease, border-color 0.15s ease;
 }
 .tool-card:hover {
     border-color: var(--primary-color);
