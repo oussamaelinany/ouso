@@ -29,6 +29,7 @@ function renderBreakoutGame(root) {
   `;
 
   const canvas = root.querySelector("#game-canvas");
+  if (!canvas) return;
   const ctx = canvas.getContext("2d");
   const overlay = root.querySelector("#game-overlay");
   const startBtn = root.querySelector("#game-start-btn");
@@ -36,6 +37,7 @@ function renderBreakoutGame(root) {
 
   let gameRunning = false;
   let score = 0;
+  let animationId = null;
 
   let cat = {
     x: 185,
@@ -68,7 +70,7 @@ function renderBreakoutGame(root) {
       moving: isMoving,
       dir: Math.random() < 0.5 ? 1 : -1,
       speed: 1 + Math.random() * (1.4 + score / 900),
-      scored: false // each platform only ever pays out points once
+      scored: false
     };
   }
 
@@ -93,9 +95,10 @@ function renderBreakoutGame(root) {
     loop();
   }
 
-  startBtn.addEventListener("click", startGame);
+  const handleStartClick = () => startGame();
+  startBtn.addEventListener("click", handleStartClick);
 
-  window.addEventListener("keydown", (e) => {
+  const handleKeyDown = (e) => {
     if (!gameRunning) return;
     if (e.code === "Space" || e.code === "ArrowUp") {
       cat.vy = cat.jump;
@@ -103,15 +106,19 @@ function renderBreakoutGame(root) {
     }
     if (e.code === "ArrowLeft") cat.vx = -MOVE_SPEED;
     if (e.code === "ArrowRight") cat.vx = MOVE_SPEED;
-  });
+  };
 
-  window.addEventListener("keyup", (e) => {
+  const handleKeyUp = (e) => {
     if (e.code === "ArrowLeft" || e.code === "ArrowRight") cat.vx = 0;
-  });
+  };
 
-  canvas.addEventListener("click", () => {
+  const handleCanvasClick = () => {
     if (gameRunning) cat.vy = cat.jump;
-  });
+  };
+
+  window.addEventListener("keydown", handleKeyDown);
+  window.addEventListener("keyup", handleKeyUp);
+  canvas.addEventListener("click", handleCanvasClick);
 
   function update() {
     cat.vy += GRAVITY;
@@ -128,8 +135,6 @@ function renderBreakoutGame(root) {
       }
     });
 
-    // Landing always makes the cat jump again, but points are only
-    // ever paid out the FIRST time a given platform is landed on.
     platforms.forEach(p => {
       if (
         cat.vy > 0 &&
@@ -155,7 +160,7 @@ function renderBreakoutGame(root) {
           const fresh = makePlatform(Math.random() * (canvas.width - 40), 0);
           p.x = fresh.x; p.y = 0; p.w = fresh.w;
           p.moving = fresh.moving; p.dir = fresh.dir; p.speed = fresh.speed;
-          p.scored = false; // it's a "new" platform now, so it can pay out again
+          p.scored = false;
         }
       });
     }
@@ -175,7 +180,11 @@ function renderBreakoutGame(root) {
     platforms.forEach(p => {
       ctx.fillStyle = p.moving ? "#E7C77E" : "#C6A15B";
       ctx.beginPath();
-      ctx.roundRect(p.x, p.y, p.w, p.h, 5);
+      if (ctx.roundRect) {
+        ctx.roundRect(p.x, p.y, p.w, p.h, 5);
+      } else {
+        ctx.rect(p.x, p.y, p.w, p.h);
+      }
       ctx.fill();
     });
 
@@ -194,7 +203,11 @@ function renderBreakoutGame(root) {
     ctx.fill();
 
     ctx.beginPath();
-    ctx.roundRect(cat.x, cat.y, cat.w, cat.h, 9);
+    if (ctx.roundRect) {
+      ctx.roundRect(cat.x, cat.y, cat.w, cat.h, 9);
+    } else {
+      ctx.rect(cat.x, cat.y, cat.w, cat.h);
+    }
     ctx.fill();
 
     ctx.fillStyle = "#0B0B0C";
@@ -218,6 +231,18 @@ function renderBreakoutGame(root) {
     if (!gameRunning) return;
     update();
     draw();
-    requestAnimationFrame(loop);
+    animationId = requestAnimationFrame(loop);
   }
+
+  // تنظيف مستمعي الأحداث العامة عند مغادرة الصفحة أو إعادة العرض لمنع التراكم
+  const observer = new MutationObserver(() => {
+    if (!document.body.contains(root)) {
+      gameRunning = false;
+      if (animationId) cancelAnimationFrame(animationId);
+      window.removeEventListener("keydown", handleKeyDown);
+      window.removeEventListener("keyup", handleKeyUp);
+      observer.disconnect();
+    }
+  });
+  observer.observe(document.body, { childList: true, subtree: true });
 }
