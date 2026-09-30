@@ -11,8 +11,8 @@ TOOL_RENDERERS["unit-converter"]      = renderUnitConverter;
 TOOL_RENDERERS["color-tools"]         = renderColorTools;
 TOOL_RENDERERS["qr-generator"]        = renderQrGenerator;
 TOOL_RENDERERS["password-generator"]  = renderPasswordGenerator;
-TOOL_RENDERERS["base64-tool"]         = renderBase64Tool;
-TOOL_RENDERERS["timestamp-converter"] = renderTimestampConverter;
+TOOL_RENDERERS["base64"]              = renderBase64Tool;
+TOOL_RENDERERS["timestamp"]           = renderTimestampConverter;
 
 /* ---------------------------------------------------------
    TEXT TOOLS
@@ -104,7 +104,7 @@ function renderCalculator(root) {
 const UNIT_GROUPS = {
   length: { m: 1, km: 1000, cm: 0.01, mm: 0.001, mi: 1609.34, yd: 0.9144, ft: 0.3048, in: 0.0254 },
   weight: { kg: 1, g: 0.001, mg: 0.000001, lb: 0.453592, oz: 0.0283495 },
-  temperature: null // handled specially
+  temperature: null
 };
 
 function renderUnitConverter(root) {
@@ -210,7 +210,7 @@ function renderColorTools(root) {
 }
 
 /* ---------------------------------------------------------
-   QR CODE GENERATOR (loads a tiny external library on demand)
+   QR CODE GENERATOR
 --------------------------------------------------------- */
 function renderQrGenerator(root) {
   root.innerHTML = `
@@ -226,11 +226,15 @@ function renderQrGenerator(root) {
   root.querySelector("#qr-generate-btn").addEventListener("click", async () => {
     if (!input.value.trim()) return;
     output.innerHTML = "";
-    await loadScriptOnce(
-      "https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js",
-      () => typeof QRCode !== "undefined"
-    );
-    new QRCode(output, { text: input.value.trim(), width: 200, height: 200 });
+    if (typeof loadScriptOnce === "function") {
+      await loadScriptOnce(
+        "https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js",
+        () => typeof QRCode !== "undefined"
+      );
+    }
+    if (typeof QRCode !== "undefined") {
+      new QRCode(output, { text: input.value.trim(), width: 200, height: 200 });
+    }
   });
 }
 
