@@ -1,0 +1,6 @@
+User-agent: *
+Allow: /
+Disallow: /private/
+Disallow: /api/
+
+Sitemap: https://ouso.com/sitemap.xml
