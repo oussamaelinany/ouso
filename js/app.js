@@ -1,315 +1,477 @@
-/*
-  OUSO — APP.JS
-*/
+/**
+ * OUSO Platform - Client-Side Router & Core Controller
+ * Supports Clean URL Routing (/category, /category/tool), History API, Dynamic Renders, and PWA.
+ */
 
 document.addEventListener("DOMContentLoaded", () => {
-  renderCategories();
-  setupNav();
-  setupModal();
-  setupActivityCounter();
-  setupFooterYear();
-  setupCategoryRouting();
-  setupSplash();
-  setupSearch();
-  setupThemeToggle();
-  setupShare();
-  setupPwaPrompt();
-});
+  // --- 1. DOM ELEMENTS CACHE ---
+  const splashScreen = document.getElementById("splash-screen");
+  const globalSearchInput = document.getElementById("globalSearchInput");
+  const themeToggleBtn = document.getElementById("themeToggleBtn");
+  const languageSelect = document.getElementById("languageSelect");
+  const settingsBtn = document.getElementById("settingsBtn");
+  const settingsModal = document.getElementById("settingsModal");
+  const closeSettingsModal = document.getElementById("closeSettingsModal");
+  const modalThemeSelect = document.getElementById("modalThemeSelect");
+  const modalLangSelect = document.getElementById("modalLangSelect");
+  const shareBtn = document.getElementById("shareBtn");
+  const pwaBanner = document.getElementById("pwaBanner");
+  const pwaInstallBtn = document.getElementById("pwaInstallBtn");
+  const pwaDismissBtn = document.getElementById("pwaDismissBtn");
+  const footerSettingsLink = document.getElementById("footerSettingsLink");
 
-/* 10. Splash Screen Logic */
-function setupSplash() {
-  const splash = document.getElementById("splash-screen");
-  if (!splash) return;
+  // --- 2. INITIALIZATION & SPLASH SCREEN ---
   setTimeout(() => {
-    splash.classList.add("fade-out");
-    setTimeout(() => splash.remove(), 400);
-  }, 1000);
-}
+    if (splashScreen) {
+      splashScreen.classList.add("fade-out");
+      setTimeout(() => splashScreen.remove(), 400);
+    }
+  }, 600);
 
-/* ---------------------------------------------------------
-   CATEGORY GRID (With Correct Cat Logo)
---------------------------------------------------------- */
-function renderCategories() {
-  const grid = document.getElementById("category-grid");
-  if (!grid) return;
+  // --- 3. THEME MANAGEMENT ---
+  const savedTheme = localStorage.getItem("ouso_theme") || "dark";
+  document.documentElement.setAttribute("data-theme", savedTheme);
+  if (modalThemeSelect) modalThemeSelect.value = savedTheme;
 
-  grid.innerHTML = OUSO_CATEGORIES.map(cat => {
-    const isGaming = cat.id === "gaming";
-    const iconHtml = isGaming ? `
-      <svg width="24" height="24" viewBox="0 0 100 100" fill="#C6A15B">
-        <path d="M30 35 L20 12 L42 26 Z M70 35 L80 12 L58 26 Z M22 45 C22 33 78 33 78 45 C78 70 72 88 50 88 C28 88 22 70 22 45 Z"/>
-        <circle cx="38" cy="46" r="5" fill="#0B0B0C"/>
-        <circle cx="62" cy="46" r="5" fill="#0B0B0C"/>
-        <path d="M43 58 Q50 65 57 58" stroke="#0B0B0C" stroke-width="4" fill="none" stroke-linecap="round"/>
-      </svg>
-    ` : `
-      <svg width="22" height="22"><use href="assets/icons/icons.svg#${cat.icon}"></use></svg>
-    `;
+  function toggleTheme() {
+    const currentTheme = document.documentElement.getAttribute("data-theme");
+    const newTheme = currentTheme === "dark" ? "light" : "dark";
+    document.documentElement.setAttribute("data-theme", newTheme);
+    localStorage.setItem("ouso_theme", newTheme);
+    if (modalThemeSelect) modalThemeSelect.value = newTheme;
+  }
 
-    return `
-      <button class="category-card" data-open-category="${cat.id}">
-        <span class="category-icon">${iconHtml}</span>
-        <h3>${cat.name}</h3>
-        <p>${cat.description}</p>
-      </button>
-    `;
-  }).join("");
+  if (themeToggleBtn) themeToggleBtn.addEventListener("click", toggleTheme);
+  if (modalThemeSelect) {
+    modalThemeSelect.addEventListener("change", (e) => {
+      const newTheme = e.target.value;
+      document.documentElement.setAttribute("data-theme", newTheme);
+      localStorage.setItem("ouso_theme", newTheme);
+    });
+  }
 
-  grid.querySelectorAll("[data-open-category]").forEach(btn => {
-    btn.addEventListener("click", () => openCategory(btn.dataset.openCategory));
+  // --- 4. SETTINGS MODAL ---
+  function openSettings() {
+    if (settingsModal) settingsModal.style.display = "flex";
+  }
+  function closeSettings() {
+    if (settingsModal) settingsModal.style.display = "none";
+  }
+
+  if (settingsBtn) settingsBtn.addEventListener("click", openSettings);
+  if (footerSettingsLink) {
+    footerSettingsLink.addEventListener("click", (e) => {
+      e.preventDefault();
+      openSettings();
+    });
+  }
+  if (closeSettingsModal) closeSettingsModal.addEventListener("click", closeSettings);
+  if (settingsModal) {
+    settingsModal.addEventListener("click", (e) => {
+      if (e.target === settingsModal) closeSettings();
+    });
+  }
+
+  // --- 5. SHARE FUNCTIONALITY ---
+  if (shareBtn) {
+    shareBtn.addEventListener("click", async () => {
+      const shareData = {
+        title: "OUSO Platform",
+        text: "Whatever You Need. It Starts Here. Discover powerful browser tools.",
+        url: window.location.origin
+      };
+      if (navigator.share) {
+        try {
+          await navigator.share(shareData);
+        } catch (err) {
+          console.log("Share canceled or failed", err);
+        }
+      } else {
+        navigator.clipboard.writeText(window.location.origin);
+        alert("Platform link copied to clipboard!");
+      }
+    });
+  }
+
+  // --- 6. PWA INSTALL HANDLER ---
+  let deferredPrompt = null;
+  window.addEventListener("beforeinstallprompt", (e) => {
+    e.preventDefault();
+    deferredPrompt = e;
+    if (pwaBanner) pwaBanner.style.display = "block";
   });
-}
 
-/* ---------------------------------------------------------
-   TOOLS PANEL & DIRECT OPENING FOR GAMING
---------------------------------------------------------- */
-function openCategory(categoryId) {
-  const category = OUSO_CATEGORIES.find(c => c.id === categoryId);
-  if (!category) return;
+  if (pwaInstallBtn) {
+    pwaInstallBtn.addEventListener("click", async () => {
+      if (deferredPrompt) {
+        deferredPrompt.prompt();
+        const { outcome } = await deferredPrompt.userChoice;
+        if (outcome === "accepted") {
+          console.log("PWA installed");
+        }
+        deferredPrompt = null;
+      }
+      if (pwaBanner) pwaBanner.style.display = "none";
+    });
+  }
 
-  if (categoryId === "gaming") {
-    const tool = OUSO_TOOLS.find(t => t.category === "gaming" && t.status === "working");
-    if (tool) {
-      document.getElementById("categories-section").hidden = true;
-      document.querySelector(".hero").hidden = true;
-      document.querySelector(".faq-section").hidden = true;
-      document.querySelector(".testimonials").hidden = true;
-      openToolWorkspace(tool);
-      history.replaceState(null, "", `#${categoryId}`);
+  if (pwaDismissBtn) {
+    pwaDismissBtn.addEventListener("click", () => {
+      if (pwaBanner) pwaBanner.style.display = "none";
+    });
+  }
+
+  // --- 7. ROUTING & PAGE BUILDER ENGINE ---
+  
+  // Dynamic Content Container Generator (Injects main view dynamically if route changes)
+  function ensureMainContainer() {
+    let mainEl = document.querySelector("main.site-main");
+    if (!mainEl) {
+      mainEl = document.createElement("main");
+      mainEl.className = "site-main";
+      const header = document.querySelector("site-header") || document.querySelector("header");
+      if (header && header.nextSibling) {
+        header.parentNode.insertBefore(mainEl, header.nextSibling);
+      } else {
+        document.body.appendChild(mainEl);
+      }
+    }
+    return mainEl;
+  }
+
+  // Render Home Page View
+  function renderHomeView() {
+    const mainEl = ensureMainContainer();
+    mainEl.innerHTML = `
+      <section class="hero-section">
+        <div class="hero-content">
+          <span class="hero-badge">Professional Web Suite</span>
+          <h1>Whatever You Need.<br>It Starts Here.</h1>
+          <p>Explore a comprehensive collection of lightning-fast, secure browser utilities, image converters, PDF tools, and developer helpers.</p>
+          <div class="hero-actions">
+            <a href="#categories" class="btn btn-primary" id="exploreBtn">Explore Categories</a>
+            <a href="/tools/calculator" class="btn btn-secondary spa-link">Try Calculator</a>
+          </div>
+        </div>
+      </section>
+
+      <section id="categories" class="categories-section">
+        <div class="section-header">
+          <h2>Platform Categories</h2>
+          <p>Select a category to access standalone tools and utilities</p>
+        </div>
+        <div id="categoriesGrid" class="categories-grid"></div>
+      </section>
+
+      <div class="ad-container ad-slot-middle">
+        <div class="ad-placeholder">Advertisement Space</div>
+      </div>
+
+      <section class="featured-tools-section">
+        <div class="section-header">
+          <h2>Featured Utilities</h2>
+          <p>Most popular tools ready to use instantly in your browser</p>
+        </div>
+        <div id="featuredToolsGrid" class="featured-tools-grid"></div>
+      </section>
+
+      <section class="about-ouso-section">
+        <div class="about-card">
+          <h2>About OUSO Platform</h2>
+          <p>OUSO is engineered to deliver fast, secure, and client-side processing for everyday digital tasks. From image compression and PDF manipulation to developer utilities and calculators, all operations run directly within your browser to guarantee maximum privacy and zero data leakage.</p>
+        </div>
+      </section>
+
+      <section id="faq" class="faq-section">
+        <div class="section-header">
+          <h2>Frequently Asked Questions</h2>
+          <p>Got questions about OUSO? Find answers below.</p>
+        </div>
+        <div class="faq-accordion">
+          <div class="faq-item">
+            <h3>Are my uploaded files and data secure?</h3>
+            <p>Yes. All image processing, PDF conversions, and utility calculations take place entirely within your browser client-side. Your files never leave your device.</p>
+          </div>
+          <div class="faq-item">
+            <h3>Do I need to install any software or plugins?</h3>
+            <p>No installation is required. OUSO is a modern web platform accessible directly from any desktop or mobile browser.</p>
+          </div>
+          <div class="faq-item">
+            <h3>Is OUSO free to use?</h3>
+            <p>All core utilities and tools on OUSO are completely free to use without mandatory subscriptions.</p>
+          </div>
+        </div>
+      </section>
+    `;
+
+    // Populate Categories Grid
+    const catGrid = document.getElementById("categoriesGrid");
+    if (catGrid && typeof OUSO_CATEGORIES !== "undefined") {
+      catGrid.innerHTML = OUSO_CATEGORIES.map(cat => `
+        <a href="/${cat.slug}" class="category-card spa-link">
+          <div>
+            <h3>${cat.name}</h3>
+            <p>${cat.description}</p>
+          </div>
+          <span class="status-badge working">Explore Tools &rarr;</span>
+        </a>
+      `).join("");
+    }
+
+    // Populate Featured Tools Grid
+    const featGrid = document.getElementById("featuredToolsGrid");
+    if (featGrid && typeof OUSO_TOOLS !== "undefined") {
+      const featured = OUSO_TOOLS.filter(t => t.status === "working").slice(0, 8);
+      featGrid.innerHTML = featured.map(tool => `
+        <a href="${tool.route}" class="tool-card spa-link">
+          <div>
+            <h3>${tool.name}</h3>
+            <p>${tool.description}</p>
+          </div>
+          <span class="status-badge ${tool.status}">${tool.status.toUpperCase()}</span>
+        </a>
+      `).join("");
+    }
+
+    // Smooth scroll for explore button
+    const exploreBtn = document.getElementById("exploreBtn");
+    if (exploreBtn) {
+      exploreBtn.addEventListener("click", (e) => {
+        e.preventDefault();
+        document.getElementById("categories").scrollIntoView({ behavior: "smooth" });
+      });
+    }
+
+    bindSpaLinks();
+  }
+
+  // Render Category Page View
+  function renderCategoryView(categorySlug) {
+    const category = OUSO_CATEGORIES.find(c => c.slug === categorySlug);
+    const mainEl = ensureMainContainer();
+
+    if (!category) {
+      render404View();
       return;
     }
+
+    const toolsInCategory = OUSO_TOOLS.filter(t => t.category === category.slug);
+
+    mainEl.innerHTML = `
+      <div class="breadcrumb-nav" style="margin-bottom: 1.5rem;">
+        <a href="/" class="spa-link" style="color: var(--accent-blue); text-decoration: none;">Home</a> / <span style="color: var(--text-secondary);">${category.name}</span>
+      </div>
+
+      <section class="hero-section" style="padding: 2.5rem 1rem; margin-bottom: 2rem;">
+        <div class="hero-content">
+          <h1>${category.name}</h1>
+          <p>${category.description}</p>
+        </div>
+      </section>
+
+      <section class="categories-section">
+        <div class="section-header">
+          <h2>Available ${category.name} Utilities</h2>
+          <p>Select any tool below to launch it instantly</p>
+        </div>
+        <div class="categories-grid">
+          ${toolsInCategory.map(tool => `
+            <a href="${tool.route}" class="tool-card spa-link">
+              <div>
+                <h3>${tool.name}</h3>
+                <p>${tool.description}</p>
+              </div>
+              <span class="status-badge ${tool.status}">${tool.status.toUpperCase()}</span>
+            </a>
+          `).join("")}
+        </div>
+      </section>
+    `;
+
+    bindSpaLinks();
   }
 
-  document.getElementById("categories-section").hidden = true;
-  document.querySelector(".hero").hidden = true;
-  document.querySelector(".faq-section").hidden = true;
-  document.querySelector(".testimonials").hidden = true;
+  // Render Individual Tool Page View
+  function renderToolView(categorySlug, toolSlug) {
+    const tool = OUSO_TOOLS.find(t => t.category === categorySlug && t.slug === toolSlug);
+    const mainEl = ensureMainContainer();
 
-  const panel = document.getElementById("tools-panel");
-  const tools = OUSO_TOOLS.filter(t => t.category === categoryId);
-
-  document.getElementById("tools-panel-title").textContent = category.name;
-  document.getElementById("tools-panel-desc").textContent = category.description;
-  document.getElementById("tools-panel-icon").innerHTML =
-    `<svg width="26" height="26"><use href="assets/icons/icons.svg#${category.icon}"></use></svg>`;
-
-  document.getElementById("tool-grid").innerHTML = tools.map(tool => `
-    <button class="tool-card" data-open-tool="${tool.id}">
-      <span class="tool-icon">
-        <svg width="20" height="20"><use href="assets/icons/icons.svg#${tool.icon}"></use></svg>
-      </span>
-      <h4>${tool.name}</h4>
-      <p>${tool.description}</p>
-      ${toolBadge(tool.status)}
-    </button>
-  `).join("");
-
-  panel.querySelectorAll("[data-open-tool]").forEach(btn => {
-    btn.addEventListener("click", () => {
-      const tool = OUSO_TOOLS.find(t => t.id === btn.dataset.openTool);
-      handleToolClick(tool);
-    });
-  });
-
-  panel.hidden = false;
-  history.replaceState(null, "", `#${categoryId}`);
-  window.scrollTo({ top: 0, behavior: "smooth" });
-}
-
-function toolBadge(status) {
-  if (status === "working") return "";
-  const icon = status === "api-ready" ? "icon-sparkle" : "icon-lock";
-  const label = "Coming soon";
-  return `<span class="tool-badge"><svg><use href="assets/icons/icons.svg#${icon}"></use></svg>${label}</span>`;
-}
-
-function handleToolClick(tool) {
-  if (!tool) return;
-  if (tool.status === "working" && typeof TOOL_RENDERERS !== "undefined" && TOOL_RENDERERS[tool.id]) {
-    openToolWorkspace(tool);
-    return;
-  }
-  openModal(tool.name, "This service is under maintenance. It will be available soon.");
-}
-
-function openToolWorkspace(tool) {
-  const panel = document.getElementById("tools-panel");
-  if (panel) panel.hidden = true;
-
-  const workspace = document.getElementById("tool-workspace");
-  document.getElementById("tool-workspace-title").textContent = tool.name;
-  const content = document.getElementById("tool-workspace-content");
-  content.innerHTML = "";
-  if (typeof TOOL_RENDERERS !== "undefined" && TOOL_RENDERERS[tool.id]) {
-    TOOL_RENDERERS[tool.id](content);
-  }
-  workspace.hidden = false;
-  window.scrollTo({ top: 0, behavior: "smooth" });
-}
-
-function closeToolWorkspace() {
-  document.getElementById("tool-workspace").hidden = true;
-  document.getElementById("categories-section").hidden = false;
-  document.querySelector(".hero").hidden = false;
-  document.querySelector(".faq-section").hidden = false;
-  document.querySelector(".testimonials").hidden = false;
-  history.replaceState(null, "", "#home");
-  window.scrollTo({ top: 0, behavior: "smooth" });
-}
-
-function setupCategoryRouting() {
-  document.getElementById("back-to-categories").addEventListener("click", closeToolsPanel);
-  document.getElementById("back-to-tool-workspace").addEventListener("click", closeToolWorkspace);
-
-  const initial = location.hash.replace("#", "");
-  if (OUSO_CATEGORIES.some(c => c.id === initial)) {
-    openCategory(initial);
-  }
-}
-
-function closeToolsPanel() {
-  document.getElementById("tools-panel").hidden = true;
-  document.getElementById("categories-section").hidden = false;
-  document.querySelector(".hero").hidden = false;
-  document.querySelector(".faq-section").hidden = false;
-  document.querySelector(".testimonials").hidden = false;
-  history.replaceState(null, "", "#home");
-  window.scrollTo({ top: 0, behavior: "smooth" });
-}
-
-/* 3. Global Search */
-function setupSearch() {
-  const input = document.getElementById("global-search");
-  if (!input) return;
-  input.addEventListener("input", (e) => {
-    const query = e.target.value.toLowerCase().trim();
-    if (!query) return;
-    const found = OUSO_TOOLS.find(t => t.name.toLowerCase().includes(query));
-    if (found) {
-      openCategory(found.category);
+    if (!tool) {
+      render404View();
+      return;
     }
-  });
-}
 
-/* 4. Theme Toggle */
-function setupThemeToggle() {
-  const toggle = document.getElementById("theme-toggle");
-  if (!toggle) return;
-  toggle.addEventListener("click", (e) => {
-    e.preventDefault();
-    const isDark = document.body.classList.toggle("dark-theme");
-    toggle.textContent = isDark ? "☀️ Light Mode" : "🌙 Dark Mode";
-  });
-}
+    const category = OUSO_CATEGORIES.find(c => c.slug === categorySlug);
+    const categoryName = category ? category.name : categorySlug;
 
-/* 12. Share Site Button */
-function setupShare() {
-  const shareBtn = document.getElementById("share-btn");
-  if (!shareBtn) return;
-  shareBtn.addEventListener("click", (e) => {
-    e.preventDefault();
-    const url = "https://ouso.ouso.workers.dev";
-    if (navigator.share) {
-      navigator.share({ title: "OUSO", text: "Whatever You Need. It Starts Here.", url }).catch(() => {});
+    if (tool.status === "maintenance") {
+      mainEl.innerHTML = `
+        <div class="breadcrumb-nav" style="margin-bottom: 1.5rem;">
+          <a href="/" class="spa-link" style="color: var(--accent-blue); text-decoration: none;">Home</a> / 
+          <a href="/${categorySlug}" class="spa-link" style="color: var(--accent-blue); text-decoration: none;">${categoryName}</a> / 
+          <span style="color: var(--text-secondary);">${tool.name}</span>
+        </div>
+        <div class="hero-section" style="text-align: center; padding: 4rem 1rem;">
+          <div class="hero-content">
+            <span class="status-badge maintenance" style="margin-bottom: 1rem; font-size: 0.9rem; padding: 0.5rem 1rem;">COMING SOON / MAINTENANCE</span>
+            <h1>${tool.name}</h1>
+            <p>${tool.description}</p>
+            <p style="margin-top: 1.5rem; color: var(--text-muted);">This tool is currently undergoing scheduled maintenance or enhancement. Check back soon!</p>
+            <div style="margin-top: 2rem;">
+              <a href="/${categorySlug}" class="btn btn-secondary spa-link">&larr; Back to ${categoryName}</a>
+            </div>
+          </div>
+        </div>
+      `;
+      bindSpaLinks();
+      return;
+    }
+
+    // Working Tool Render
+    mainEl.innerHTML = `
+      <div class="breadcrumb-nav" style="margin-bottom: 1.5rem;">
+        <a href="/" class="spa-link" style="color: var(--accent-blue); text-decoration: none;">Home</a> / 
+        <a href="/${categorySlug}" class="spa-link" style="color: var(--accent-blue); text-decoration: none;">${categoryName}</a> / 
+        <span style="color: var(--text-secondary);">${tool.name}</span>
+      </div>
+
+      <div class="tool-header-section" style="margin-bottom: 2rem;">
+        <h1>${tool.name}</h1>
+        <p style="color: var(--text-secondary);">${tool.description}</p>
+      </div>
+
+      <div id="toolWorkspace" class="tool-workspace-container" style="background: var(--bg-card); border: 1px solid var(--border-color); border-radius: var(--radius-lg); padding: 2rem; min-height: 350px;">
+        <!-- Tool renderer injects UI here -->
+      </div>
+
+      <div style="margin-top: 2rem;">
+        <a href="/${categorySlug}" class="btn btn-secondary spa-link">&larr; Back to ${categoryName}</a>
+      </div>
+    `;
+
+    // Execute Renderer if available
+    const workspace = document.getElementById("toolWorkspace");
+    if (tool.renderer && typeof window[tool.renderer] === "function") {
+      try {
+        window[tool.renderer](workspace);
+      } catch (err) {
+        console.error("Error rendering tool:", err);
+        workspace.innerHTML = `<p style="color: var(--danger);">Error loading tool interface. Please try again later.</p>`;
+      }
     } else {
-      navigator.clipboard.writeText(url);
-      alert("Site link copied to clipboard: " + url);
+      workspace.innerHTML = `
+        <div style="text-align: center; padding: 3rem;">
+          <h3>Interactive Interface Ready</h3>
+          <p style="color: var(--text-secondary); margin-top: 0.5rem;">The tool interface is initializing...</p>
+        </div>
+      `;
     }
-  });
-}
 
-/* 13. PWA Install Prompt */
-function setupPwaPrompt() {
-  const banner = document.getElementById("pwa-banner");
-  const installBtn = document.getElementById("pwa-install-action");
-  const closeBtn = document.getElementById("pwa-close-action");
-  if (!banner) return;
+    bindSpaLinks();
+  }
 
-  if (localStorage.getItem("ouso_installed") === "true") return;
+  // Render 404 Not Found View
+  function render404View() {
+    const mainEl = ensureMainContainer();
+    mainEl.innerHTML = `
+      <div class="hero-section" style="text-align: center; padding: 5rem 1rem;">
+        <div class="hero-content">
+          <h1>404</h1>
+          <h2>Page Not Found</h2>
+          <p>The page or tool you are looking for does not exist or has been relocated.</p>
+          <div style="margin-top: 2rem;">
+            <a href="/" class="btn btn-primary spa-link">Return to Home</a>
+          </div>
+        </div>
+      </div>
+    `;
+    bindSpaLinks();
+  }
 
-  setTimeout(() => {
-    banner.hidden = false;
-  }, 3000);
+  // --- 8. ROUTER DISPATCHER ---
+  function router() {
+    const path = window.location.pathname;
+    const segments = path.split("/").filter(Boolean);
 
-  installBtn.addEventListener("click", () => {
-    localStorage.setItem("ouso_installed", "true");
-    banner.hidden = true;
-    alert("To install OUSO, use your browser menu and select 'Add to Home Screen' or 'Install App'.");
-  });
+    if (segments.length === 0) {
+      document.title = "OUSO - Whatever You Need. It Starts Here.";
+      renderHomeView();
+    } else if (segments.length === 1) {
+      const categorySlug = segments[0];
+      const category = OUSO_CATEGORIES.find(c => c.slug === categorySlug);
+      if (category) {
+        document.title = `${category.name} - OUSO`;
+        renderCategoryView(categorySlug);
+      } else {
+        document.title = "Page Not Found - OUSO";
+        render404View();
+      }
+    } else if (segments.length === 2) {
+      const [categorySlug, toolSlug] = segments;
+      const tool = OUSO_TOOLS.find(t => t.category === categorySlug && t.slug === toolSlug);
+      if (tool) {
+        document.title = tool.seo ? tool.seo.title : `${tool.name} - OUSO`;
+        renderToolView(categorySlug, toolSlug);
+      } else {
+        document.title = "Tool Not Found - OUSO";
+        render404View();
+      }
+    } else {
+      document.title = "Page Not Found - OUSO";
+      render404View();
+    }
 
-  closeBtn.addEventListener("click", () => {
-    banner.hidden = true;
-    localStorage.setItem("ouso_installed", "true");
-  });
-}
+    window.scrollTo({ top: 0, behavior: "smooth" });
+  }
 
-/* MOBILE NAVIGATION */
-function setupNav() {
-  const toggle = document.getElementById("nav-toggle");
-  const nav = document.getElementById("main-nav");
-  if (!toggle || !nav) return;
-
-  toggle.addEventListener("click", () => {
-    const isOpen = nav.classList.toggle("is-open");
-    toggle.setAttribute("aria-expanded", String(isOpen));
-  });
-
-  nav.querySelectorAll("a").forEach(link => {
-    link.addEventListener("click", () => {
-      nav.classList.remove("is-open");
-      toggle.setAttribute("aria-expanded", "false");
+  // --- 9. SPA LINK INTERCEPTION ---
+  function bindSpaLinks() {
+    document.querySelectorAll("a.spa-link, .header-nav a, .footer-col a, .category-card, .tool-card").forEach(link => {
+      // Avoid binding external or anchor links
+      const href = link.getAttribute("href");
+      if (!href || href.startsWith("http") || href.startsWith("#") || link.getAttribute("target") === "_blank") {
+        return;
+      }
+      
+      // Ensure we don't bind twice
+      link.removeEventListener("click", handleSpaClick);
+      link.addEventListener("click", handleSpaClick);
     });
+  }
+
+  function handleSpaClick(e) {
+    const href = this.getAttribute("href");
+    if (!href || href.startsWith("http") || href.startsWith("#")) return;
+
+    e.preventDefault();
+    window.history.pushState({}, "", href);
+    router();
+  }
+
+  // Handle browser back/forward buttons
+  window.addEventListener("popstate", () => {
+    router();
   });
-}
 
-/* MODAL */
-function setupModal() {
-  const backdrop = document.getElementById("modal-backdrop");
-  const closeBtn = document.getElementById("modal-close");
-  if (!backdrop || !closeBtn) return;
+  // --- 10. SEARCH AUTOCOMPLETE / REDIRECT INTEGRATION ---
+  if (globalSearchInput && typeof OUSO_TOOLS !== "undefined") {
+    globalSearchInput.addEventListener("keydown", (e) => {
+      if (e.key === "Enter") {
+        const query = globalSearchInput.value.trim().toLowerCase();
+        if (!query) return;
 
-  closeBtn.addEventListener("click", closeModal);
-  backdrop.addEventListener("click", (e) => { if (e.target === backdrop) closeModal(); });
-  document.addEventListener("keydown", (e) => { if (e.key === "Escape") closeModal(); });
-
-  document.querySelectorAll("[data-footer-modal]").forEach(link => {
-    link.addEventListener("click", (e) => {
-      e.preventDefault();
-      openModal(link.textContent.trim(), "This legal page is coming soon.");
+        const matchedTool = OUSO_TOOLS.find(t => t.name.toLowerCase().includes(query) || t.description.toLowerCase().includes(query));
+        if (matchedTool) {
+          window.history.pushState({}, "", matchedTool.route);
+          globalSearchInput.value = "";
+          router();
+        } else {
+          alert("No matching tools found.");
+        }
+      }
     });
-  });
-}
+  }
 
-function openModal(title, message) {
-  document.getElementById("modal-title").textContent = title;
-  document.getElementById("modal-message").textContent = message;
-  document.getElementById("modal-backdrop").hidden = false;
-}
-
-function closeModal() {
-  document.getElementById("modal-backdrop").hidden = true;
-}
-
-/* 1. Random Fluctuating Visitor Counter */
-function setupActivityCounter() {
-  const el = document.getElementById("activity-counter");
-  if (!el) return;
-  
-  let currentVal = 5528585;
-  const min = 155888;
-  const max = 8656641;
-
-  setInterval(() => {
-    const delta = Math.floor(Math.random() * 7000) - 3200;
-    currentVal += delta;
-    if (currentVal > max) currentVal = max;
-    if (currentVal < min) currentVal = min;
-    el.textContent = currentVal.toLocaleString("en-US");
-  }, 1000);
-}
-
-/* FOOTER YEAR */
-function setupFooterYear() {
-  const yearEl = document.getElementById("footer-year");
-  if (yearEl) yearEl.textContent = new Date().getFullYear();
-                          }
+  // Initial Router Run on Page Load
+  router();
+});
