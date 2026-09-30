@@ -63,6 +63,7 @@ function buildFileZone(id, label, accept, multiple) {
 function wireFileZone(root, id, onFiles) {
   const zone = root.querySelector(`#${id}-zone`);
   const input = root.querySelector(`#${id}-input`);
+  if (!zone || !input) return;
   zone.addEventListener("click", () => input.click());
   input.addEventListener("change", () => { if (input.files.length) onFiles([...input.files]); });
 }
