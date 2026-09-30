@@ -42,7 +42,7 @@
   <!-- HEADER -->
   <header class="site-header">
     <div class="wrap header-inner">
-      <a href="/" class="brand" id="brand-home-link">
+      <a href="/" class="brand" id="brand-home-link" data-route-link>
         <svg class="brand-mark" viewBox="0 0 100 100" fill="#C6A15B">
           <path d="M30 35 L20 12 L42 26 Z M70 35 L80 12 L58 26 Z M22 45 C22 33 78 33 78 45 C78 70 72 88 50 88 C28 88 22 70 22 45 Z"/>
           <circle cx="38" cy="46" r="5" fill="#0B0B0C"/>
@@ -59,11 +59,12 @@
       </div>
 
       <nav class="main-nav" id="main-nav">
-        <a href="/" id="nav-home-link">Home</a>
-        <a href="/#faq-section">FAQ</a>
+        <a href="/" id="nav-home-link" data-route-link>Home</a>
+        <a href="/legal/about" data-route-link>About</a>
+        <a href="/legal/contact" data-route-link>Contact</a>
         <a href="#" id="share-btn">Share Site</a>
         <a href="#" id="theme-toggle">🌙 Dark Mode</a>
-        <a href="#" style="opacity: 0.6; cursor: default;">🌐 English (Others Locked)</a>
+        <a href="#" style="opacity: 0.6; cursor: default;">🌐 English</a>
       </nav>
 
       <div class="nav-controls">
@@ -174,12 +175,12 @@
       </section>
     </div>
 
-    <!-- INDIVIDUAL TOOL VIEW (Working & Coming Soon / Maintenance) -->
+    <!-- INDIVIDUAL TOOL & STATIC PAGE VIEW -->
     <div id="view-tool" hidden>
       <div class="wrap tool-page-wrap">
         <!-- Breadcrumb -->
         <nav class="tool-breadcrumb" id="tool-breadcrumb" aria-label="Breadcrumb">
-          <!-- Dynamically filled: Home → Category → Tool Name -->
+          <!-- Dynamically filled -->
         </nav>
 
         <!-- Back Links -->
@@ -194,7 +195,7 @@
           </a>
         </div>
 
-        <!-- Tool Header Info -->
+        <!-- Tool / Page Header Info -->
         <div class="tool-page-header">
           <div class="tool-page-icon" id="tool-page-icon"></div>
           <div>
@@ -208,7 +209,7 @@
           <span class="ad-slot-label">Advertisement Area</span>
         </div>
 
-        <!-- Tool Interface / Coming Soon Box -->
+        <!-- Tool Interface / Coming Soon / Static Page Content Area -->
         <div id="tool-page-content-area"></div>
 
         <!-- Advertisement Area 2 -->
@@ -268,21 +269,22 @@
         </div>
         <div class="footer-col">
           <h4>Categories</h4>
-          <a href="/images">Images</a>
-          <a href="/videos">Videos</a>
-          <a href="/pdf">PDF Tools</a>
-          <a href="/tools">Utilities</a>
+          <a href="/images" data-route-link>Images</a>
+          <a href="/videos" data-route-link>Videos</a>
+          <a href="/pdf" data-route-link>PDF Tools</a>
+          <a href="/tools" data-route-link>Utilities</a>
         </div>
         <div class="footer-col">
           <h4>Platform</h4>
-          <a href="/#faq-section">FAQ</a>
-          <a href="#" id="footer-install-btn">Install App</a>
-          <a href="#" onclick="alert('OUSO v2.5 Stable')">About</a>
+          <a href="/legal/about" data-route-link>About OUSO</a>
+          <a href="/legal/contact" data-route-link>Contact Us</a>
+          <a href="/#faq-section" data-route-link>FAQ</a>
         </div>
         <div class="footer-col">
           <h4>Legal</h4>
-          <a href="#" data-footer-modal>Privacy Policy</a>
-          <a href="#" data-footer-modal>Terms of Service</a>
+          <a href="/legal/privacy" data-route-link>Privacy Policy</a>
+          <a href="/legal/terms" data-route-link>Terms of Service</a>
+          <a href="/legal/disclaimer" data-route-link>Disclaimer</a>
         </div>
       </div>
       <div class="footer-copy">
