@@ -1,7 +1,9 @@
 {
+  "$schema": "./node_modules/wrangler/config-schema.json",
   "name": "ouso",
-  "compatibility_date": "2025-01-01",
+  "compatibility_date": "2024-03-20",
   "assets": {
-    "directory": "./"
+    "directory": ".",
+    "not_found_handling": "single-page-application"
   }
 }
