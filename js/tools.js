@@ -1,56 +1,29 @@
-<!DOCTYPE html>
-<html lang="en" dir="ltr">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    
-    <!-- Primary SEO -->
-    <title>OUSO Platform - Advanced Digital Tools & Smart Web Services</title>
-    <meta name="description" content="Discover a comprehensive suite of digital tools, smart web services, and productivity solutions designed to streamline your daily tasks efficiently.">
-    <link rel="canonical" href="https://ouso.com/">
-    <meta name="robots" content="index, follow">
-    <meta name="theme-color" content="#2563eb">
-
-    <!-- Open Graph / Facebook -->
-    <meta property="og:type" content="website">
-    <meta property="og:url" content="https://ouso.com/">
-    <meta property="og:title" content="OUSO Platform - Advanced Digital Tools & Smart Web Services">
-    <meta property="og:description" content="Discover a comprehensive suite of digital tools and smart web services via OUSO Platform.">
-    <meta property="og:image" content="https://ouso.com/assets/og-image.jpg">
-
-    <!-- Twitter / X -->
-    <meta name="twitter:card" content="summary_large_image">
-    <meta name="twitter:url" content="https://ouso.com/">
-    <meta name="twitter:title" content="OUSO Platform - Advanced Digital Tools & Smart Web Services">
-    <meta name="twitter:description" content="Discover a comprehensive suite of digital tools and smart web services via OUSO Platform.">
-    <meta name="twitter:image" content="https://ouso.com/assets/og-image.jpg">
-
-    <!-- Structured Data (Organization & WebSite) -->
-    <script type="application/ld+json">
-    {
-      "@context": "https://schema.org",
-      "@type": "WebSite",
-      "name": "OUSO",
-      "url": "https://ouso.com/",
-      "potentialAction": {
-        "@type": "SearchAction",
-        "target": "https://ouso.com/search?q={search_term_string}",
-        "query-input": "required name=search_term_string"
-      }
-    }
-    </script>
-
-    <!-- Stylesheets -->
-    <link rel="stylesheet" href="style.css">
-</head>
-<body>
-    <div id="app">
-        <!-- المحتوى الأساسي يتم حقنه ديناميكياً -->
-    </div>
-
-    <!-- Scripts -->
-    <script src="i18n.js"></script>
-    <script src="tools.js"></script>
-    <script src="app.js"></script>
-</body>
-</html>
+// بيانات الأدوات والفئات مربوطة بمفاتيح الترجمة في i18n.js
+const ousoData = {
+    categories: [
+        {
+            id: "productivity",
+            key: "productivity",
+            slug: "category/productivity"
+        },
+        {
+            id: "development",
+            key: "development",
+            slug: "category/development"
+        }
+    ],
+    tools: [
+        {
+            id: "tool-1",
+            categoryId: "productivity",
+            key: "textFormatter",
+            slug: "tools/text-formatter"
+        },
+        {
+            id: "tool-2",
+            categoryId: "development",
+            key: "jsonValidator",
+            slug: "tools/json-validator"
+        }
+    ]
+};
